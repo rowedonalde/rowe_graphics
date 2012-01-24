@@ -36,7 +36,7 @@
     context25d.stroke();
     
     //25e
-    var canvas25e = document.getElementById('25d');
+    var canvas25e = document.getElementById('25e');
     var context25e = canvas25e.getContext('2d');
     context25e.beginPath();
     context25e.moveTo(70, 0);
