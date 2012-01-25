@@ -1,5 +1,7 @@
 /*
  * Script for 0126 #25a
+ *
+ * Blue square
  */
 
 window.onload = 

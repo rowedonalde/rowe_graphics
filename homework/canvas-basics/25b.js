@@ -1,5 +1,7 @@
 /*
  * Script for 0126 #25b
+ *
+ * Outlines the edges of the canvas
  */
 
 window.onload = 
