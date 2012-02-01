@@ -1,5 +1,6 @@
 /*
  * Script for 0126 #26b
+ * A green Grid
  */
 
 window.onload = 

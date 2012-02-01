@@ -1,5 +1,6 @@
 /*
  * Script for 0126 #25c
+ * Translucent red and green squares overlapping
  */
 
 window.onload = 

@@ -1,5 +1,6 @@
 /*
  * Script for 0126 #25e
+ * A brown hexagon
  */
 
 window.onload = 
@@ -24,6 +25,5 @@ window.onload =
     context25e.closePath();
     context25e.fillStyle = "brown";
     context25e.fill();
-    context25e.stroke();
   }
 );

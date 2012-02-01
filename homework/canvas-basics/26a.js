@@ -1,5 +1,6 @@
 /*
  * Script for 0126 #26a
+ * A grid of lavender squares
  */
 
 window.onload = 

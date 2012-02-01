@@ -1,5 +1,6 @@
 /*
  * Script for 0126 #25d
+ * An orange X joining opposite corners
  */
 
 window.onload = 

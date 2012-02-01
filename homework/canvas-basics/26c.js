@@ -1,5 +1,6 @@
 /*
  * Script for 0126 #26c
+ * A honeycomb pattern
  */
 
 window.onload = 
