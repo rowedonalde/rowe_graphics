@@ -25,6 +25,29 @@ var KeyframeTweener = {
                 (distance / 2) * percentComplete * percentComplete + start :
                 (-distance / 2) * ((percentComplete - 1) * (percentComplete - 3) - 1) + start;
     },
+    
+    easeInBack: function (currentTime, start, distance, duration, overshoot) {
+        if (overshoot === undefined) overshoot = 1.70158;
+        var progress = currentTime / duration;
+        return distance * progress * progress * ((overshoot + 1) * progress - overshoot) + start;
+    },
+    
+    easeOutBounce: function (currentTime, start, distance, duration) {
+        var progress = currentTime / duration;
+        
+        if (progress < (1 / 2.75)) {
+            return distance * (7.5625 * progress * progress) + start;
+        } else if (progress < (2 / 2.75)) {
+            progress -= (1.5 / 2.75);
+            return distance * (7.5625 * progress * progress + 0.75) + start;
+        } else if (progress < (2.5 / 2.75)) {
+            progress -= (2.25 / 2.75)
+            return distance * (7.5625 * progress * progress + 0.9375) + start;
+        } else {
+            progress -= (2.625 / 2.75);
+            return distance * (7.5625 * progress * progress + 0.984375) + start;
+        }
+    },
 
     // The big one: animation initialization.  The settings parameter
     // is expected to be a JavaScript object with the following

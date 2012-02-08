@@ -46,7 +46,7 @@
                         frame: 30,
                         tx: 100,
                         ty: 50,
-                        ease: KeyframeTweener.quadEaseInOut,
+                        ease: KeyframeTweener.easeOutBounce,
                         drawIndex: 1
                     },
 
