@@ -48,20 +48,113 @@
     renderingContext.lineTo(435, 265);
     renderingContext.fill();
     renderingContext.closePath();
-
-    // Display a quick alert that we are about to apply the filter.
-    alert("Here goes...");
-
-    // Filter time.
-    renderingContext.putImageData(
-        Nanoshop.applyFilter(
-            renderingContext.getImageData(0, 0, canvas.width, canvas.height),
-            // This is a basic "darkener."
-            function (r, g, b, a) {
-                return [r / 2, g / 2, b / 2, a];
-            }
-        ),
-        0,
-        0
-    );
+    
+    //When the user clicks the "Darken" button, everything will get darker:
+    $('#darkenbutton').click(function()
+    {
+        // Display a quick alert that we are about to apply the filter.
+        alert("Here goes...Darkening!");
+    
+        // Filter time.
+        renderingContext.putImageData(
+            Nanoshop.applyFilter(
+                renderingContext.getImageData(0, 0, canvas.width, canvas.height),
+                // This is a basic "darkener."
+                function (r, g, b, a) {
+                    return [r / 2, g / 2, b / 2, a];
+                }
+            ),
+            0,
+            0
+        );
+    });
+    
+    //When the user clicks the "Lighten" button, everything will get lighter:
+    $('#lightenbutton').click(function()
+    {
+        // Display a quick alert that we are about to apply the filter.
+        alert("1, 2, 3...Lightening!");
+        
+        //Apply the filter:
+        renderingContext.putImageData(
+            Nanoshop.applyFilter(
+                renderingContext.getImageData(0, 0, canvas.width, canvas.height),
+                //This is a basic "lightener" that preserves the relative
+                //brightness of each color channel:
+                function(r, g, b, a) {
+                    
+                    //The highest level for each color channel:
+                    var maxBrightness = 255;
+                    
+                    //The default lightening factor:
+                    var defaultBrightness = 2;
+                    
+                    //Find the brightest color channel:
+                    var brightestColor = Math.max(r, g, b);
+                    
+                    //This is the factor by which each color is intensified.
+                    //The default is 2. If a factor of 2 would cause color 
+                    //distortion due to overflow, the brightness factor is
+                    //adjusted accordingly.
+                    var brightnessFactor = Math.min(defaultBrightness,
+                                                    maxBrightness / brightestColor);
+                    
+                    return [r * brightnessFactor, g * brightnessFactor, b * brightnessFactor, a];
+                }
+            ),
+            0,
+            0
+        );
+    });
+    
+    //When the user clicks the "Invert" button, all the colors will invert:
+    $('#invertbutton').click(function()
+    {
+        // Display a quick alert that we are about to apply the filter.
+        alert("Watch out...Inversion ahead!");
+        
+        //Apply the filter:
+        renderingContext.putImageData(
+            Nanoshop.applyFilter(
+                renderingContext.getImageData(0, 0, canvas.width, canvas.height),
+                //This inverts the colors to create a negative image:
+                function(r, g, b, a) {
+                    return [255 - r, 255 - g, 255 - b, a];
+                }
+            ),
+            0,
+            0
+        );
+    });
+    
+    //When the user clicks the "Posterize" button, the color channels will each
+    //reduce to 4 shades (including 0), and transparency will be set to 1:
+    $('#posterizebutton').click(function()
+    {
+        //Display a quick alert that we are about to apply the filter:
+        alert('Holy Warhol...it\'s posterized!');
+        
+        //Apply the filter:
+        renderingContext.putImageData(
+            Nanoshop.applyFilter(
+                renderingContext.getImageData(0, 0, canvas.width, canvas.height),
+                //This reduces the color depth to create a posterized effect:
+                function(r, g, b, a) {
+                    //The size of each color jump in terms of the original
+                    //depth:
+                    var colorGrade = 255 / 3;
+                    
+                    //Round each color channel up to its nearest jump if it
+                    //isn't 0:
+                    var rFlat = Math.ceil(r / colorGrade) * colorGrade;
+                    var gFlat = Math.ceil(g / colorGrade) * colorGrade;
+                    var bFlat = Math.ceil(b / colorGrade) * colorGrade;
+                    
+                    return [rFlat, gFlat, bFlat, 255];
+                }
+            ),
+            0,
+            0
+        );
+    });
 }());
