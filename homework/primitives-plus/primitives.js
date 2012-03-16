@@ -287,16 +287,24 @@ var Primitives = {
     plotCirclePoints: function (context, xc, yc, x, y, color) {
         color = color || [0, 0, 0];
         
-        //In my mod, I use the lineDDA function to draw a line from the center
-        //of the circle to each point on the circle:
-        this.lineDDA(context, xc, yc, xc + x, yc + y, color);
-        this.lineDDA(context, xc, yc, xc + x, yc - y, color);
-        this.lineDDA(context, xc, yc, xc + y, yc + x, color);
-        this.lineDDA(context, xc, yc, xc + y, yc - x, color);
-        this.lineDDA(context, xc, yc, xc - x, yc + y, color);
-        this.lineDDA(context, xc, yc, xc - x, yc - y, color);
-        this.lineDDA(context, xc, yc, xc - y, yc + x, color);
-        this.lineDDA(context, xc, yc, xc - y, yc - x, color);
+        //Part of the fill problem was that circleTrig and circleDDA had non-
+        //integer values for some of the parameters. The floor function rounds
+        //them down to the nearest integer, since otherwise canvas guesses
+        //wrong.
+        xc = Math.floor(xc);
+        yc = Math.floor(yc);
+        x = Math.floor(x);
+        y = Math.floor(y);
+        
+        //In my mod of this plotting function, I draw a line from the given
+        //point on the circle to the point directly across the vertical line of
+        //symmetry. This is done four times: the points in the original octant,
+        //the original octant rotated cw PI/4, the original octant rotated
+        //cc PI/2, and the original octant rotated cw PI/2.
+        this.lineDDA(context, xc + x, yc + y, xc - x, yc + y);
+        this.lineDDA(context, xc + x, yc - y, xc - x, yc - y);
+        this.lineDDA(context, xc + y, yc + x, xc - y, yc + x);
+        this.lineDDA(context, xc + y, yc - x, xc - y, yc - x);
     },
 
     // First, the most naive possible implementation: circle by trigonometry.
