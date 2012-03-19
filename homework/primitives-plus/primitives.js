@@ -255,10 +255,15 @@ var Primitives = {
         color = color || [0, 0, 0];
         while (true) {
             //Increment the counter:
-            count++;
+            count += 1; // JD: += 1 is preferred in JavaScript over ++.
             
             //Every dash+1th pixel, don't draw anything:
-            if ( typeof dash !== 'undefined' && count % (dash+1) !== 0 ) {
+            // JD: You can tighten up this condition by exploiting "truthiness"
+            //     in JavaScript.  Plus, shouldn't you actually *allow* an
+            //     undefined dash, so that if the user omits dash, you just
+            //     draw a solid line?
+            if (!dash || (count % (dash + 1))) {
+            //if ( typeof dash !== 'undefined' && count % (dash+1) !== 0 ) {
                 this.setPixel(context, x, y, color[0], color[1], color[2]);
             }
             
@@ -301,6 +306,7 @@ var Primitives = {
         //symmetry. This is done four times: the points in the original octant,
         //the original octant rotated cw PI/4, the original octant rotated
         //cc PI/2, and the original octant rotated cw PI/2.
+        // JD: Nailed it!
         this.lineDDA(context, xc + x, yc + y, xc - x, yc + y);
         this.lineDDA(context, xc + x, yc - y, xc - x, yc - y);
         this.lineDDA(context, xc + y, yc + x, xc - y, yc + x);

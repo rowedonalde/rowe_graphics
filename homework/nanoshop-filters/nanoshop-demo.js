@@ -81,6 +81,9 @@
                 renderingContext.getImageData(0, 0, canvas.width, canvas.height),
                 //This is a basic "lightener" that preserves the relative
                 //brightness of each color channel:
+                
+                // JD: These, and the others, should go to Nanoshop, so that
+                //     this code can simply reference, e.g., "Nanoshop.lightener".
                 function(r, g, b, a) {
                     
                     //The highest level for each color channel:
