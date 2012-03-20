@@ -2,4 +2,26 @@ Don Rowe
 CMSI 371
 Assignment 0306
 
-1. a.
+1. a. The Bresenham line algorithms here are hardcoded for lines that are not
+      vertical. This is an acceptable starting point because most lines are
+      going to have a slope of some kind.
+      
+   b. The algorithms need to handle when dx === 0 (that is, they need not to
+      return instantly because x starts out as equal to x2). When this is the
+      case, they should just iterate through every pixel on X = x from y to y2.
+
+2. [To which implementation does the question refer?]
+
+3. Much like filling in the polygon with a solid color, the fillPolygon
+   function should start at the top left corner of the rectangle bounding the
+   polygon and move right across the row. The pixel drawer should start in the
+   off-position and toggle every time an edge is crossed. In the implementation
+   of fillPolygon which blends colors, when an edge is met the color should be
+   set to the "blend progress" from the first vertex to the second vertex
+   forming the edge; this blend progress color is found by taking the change
+   in each of rgb per unit distance from the first vertex to the second and
+   multiplying each by the distance from the first vertex to the current point.
+   The pixel drawer should find the next edge in the row and find the blend
+   progress at that point. For each pixel between edges in this row, the blend
+   progress should be found from the left edge point to the right edge point,
+   and the pixel drawer should use that color, blending from edge to edge.
