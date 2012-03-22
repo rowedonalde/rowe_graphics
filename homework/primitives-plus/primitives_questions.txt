@@ -2,15 +2,21 @@ Don Rowe
 CMSI 371
 Assignment 0306
 
-1. a. The Bresenham line algorithms here are hardcoded for lines that are not
-      vertical. This is an acceptable starting point because most lines are
-      going to have a slope of some kind.
+1. a. The Bresenham line algorithms here are hardcoded for lines that go from 
+      southwest to northeast. This is an acceptable starting point because most
+      lines are going to have a slope of some kind. Also, the algorithm can
+      be "flipped" vertically.
       
    b. The algorithms need to handle when dx === 0 (that is, they need not to
       return instantly because x starts out as equal to x2). When this is the
       case, they should just iterate through every pixel on X = x from y to y2.
+      The algorithms also need to handle when dx / dy is negative. In this case
+      err += dy / dx should be -= instead.
 
-2. [To which implementation does the question refer?]
+2. A vertical line, lines where dy is negative, and lines where dx is negative.
+   In the vertical line, there would just be a divide-by-zero exception, while
+   in the other cases they would render as horizontal lines since err would
+   never be greater than or equal to 0.5.
 
 3. Much like filling in the polygon with a solid color, the fillPolygon
    function should start at the top left corner of the rectangle bounding the
