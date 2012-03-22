@@ -415,9 +415,16 @@ var Primitives = {
      */
 
     // For starters, we need an Edge helper object.
-    Edge: function (p1, p2) {
+    //DR: Added color handling for edge:
+    Edge: function (p1, p2, c1, c2) {
+        //To make it back-compatible, I default c1 and c2 to black if they are
+        //not specified:
+        this.c1 = c1 || [0, 0, 0];
+        this.c2 = c2 || [0, 0, 0];
+        
         this.maxY = Math.max(p1.y, p2.y);
         this.minY = Math.min(p1.y, p2.y);
+        this.height = this.maxY - this.minY;
         this.horizontal = (p1.y === p2.y);
         if (!this.horizontal) {
             this.inverseSlope = (p2.x - p1.x) / (p2.y - p1.y);
@@ -426,6 +433,30 @@ var Primitives = {
         // The initial x coordinate is the x coordinate of the
         // point with the lower y value.
         this.currentX = (p1.y === this.minY) ? p1.x : p2.x;
+        
+        //The color of the point with the lesser y-value and with the greater
+        //y-value, respectively:
+        this.topColor = (p1.y < p2.y) ? c1, c2;
+        this.bottomColor = (p1.y < p2.y) ? c2, c1;
+        
+        //Calculate the color for a given y-value:
+        this.colorAtY = function(y)
+        {
+            var currentColor = new Array(3);
+            
+            for (var i = 0; i < 3; i++)
+            {
+                //First, calculate the total change in color:
+                var colorDelta = bottomColor[i] - topColor[i];
+                
+                //Next, figure out what fraction along the line you are
+                //height-wise:
+                currentColor[i] = ((y - this.minY) / this.height) * colorDelta
+                                  + topColor[i];
+            }
+            
+            return currentColor;
+        };
     },
 
     // Now to the function itself.
