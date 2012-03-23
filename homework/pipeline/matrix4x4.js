@@ -83,4 +83,33 @@ var Matrix4x4 = function(rawMatrix){
     
     return product;
   };
+  
+  /**
+   * This static method returns a new Matrix4x4 object representing the
+   * vector by which another matrix could be translated.
+   */
+  this.translate = function(dx, dy, dz)
+  {
+    //A 1-d representation of the vector matrix:
+    var matrix = [1, 0, 0, dx,
+                  0, 1, 0, dy,
+                  0, 0, 1, dz,
+                  0, 0, 0, 1];
+                  
+    return new Matrix4x4(matrix);
+  };
+  
+  /**
+   * This static method returns a new Matrix4x4 object representing the
+   * vector by which another matrix could be scaled.
+   */
+  this.scale(sx, sy, sz)
+  {
+    var matrix = [sx, 0, 0, 0,
+                  0, sy, 0, 0,
+                  0, 0, sz, 0,
+                  0, 0, 0, 1];
+                  
+    return new Matrix4x4(matrix);
+  };
 };
