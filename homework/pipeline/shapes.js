@@ -144,9 +144,29 @@ var Shapes = {
             }
         }
         
+        //Constants for RAD values of sine and cosine of 80 deg:
+        var sin80 = Math.sin(80 * degreesToRadians);
+        var cos80 = Math.cos(80 * degreesToRadians);
+        
+        
+        //Draw the first pole:
+        var pole1Vertices = Array();
+        
+        //Add the tip:
+        pole1Vertices = pole1Vertices.concat(0, 0, 1);
+        
+        //Add the ring:
+        for (var theta = -180; theta <= 180; theta += 10) {
+            var thetaR = theta * degreesToRadians;
+            x = Math.sin(thetaR) * cos80;
+            y = Math.cos(thetaR) * cos80;
+            z = sin80;
+            pole1Vertices = pole1Vertices.concat(x, y, z);
+        }
+        
         //Return an object containing both the strip patterns and
         //the poles:
-        return {strip: stripVertices};
+        return {strip: stripVertices; fan1: pole1Vertices};
     }
 
 };
