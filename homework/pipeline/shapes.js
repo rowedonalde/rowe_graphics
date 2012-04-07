@@ -149,13 +149,13 @@ var Shapes = {
         var cos80 = Math.cos(80 * degreesToRadians);
         
         
-        //Draw the first pole:
+        //Draw the far pole:
         var pole1Vertices = Array();
         
-        //Add the tip:
+        //Add the far tip:
         pole1Vertices = pole1Vertices.concat(0, 0, 1);
         
-        //Add the ring:
+        //Add the far ring:
         for (var theta = -180; theta <= 180; theta += 10) {
             var thetaR = theta * degreesToRadians;
             x = Math.sin(thetaR) * cos80;
@@ -164,9 +164,27 @@ var Shapes = {
             pole1Vertices = pole1Vertices.concat(x, y, z);
         }
         
+        
+        //Draw the near pole:
+        var pole2Vertices = Array();
+        
+        //Add the near:
+        pole2Vertices = pole2Vertices.concat(0, 0, -1);
+        
+        //Add the near ring:
+        for (var theta = -180; theta <= 180; theta += 20) {
+            var thetaR = theta * degreesToRadians;
+            x = Math.sin(thetaR) * cos80;
+            y = Math.cos(thetaR) * cos80;
+            z = sin80;
+            
+            pole2Vertices = pole2Vertices.concat(x, y, z);
+        }
+        
+        
         //Return an object containing both the strip patterns and
         //the poles:
-        return {strip: stripVertices, fan1: pole1Vertices};
+        return {strip: stripVertices, fan1: pole1Vertices, fan2: pole2Vertices};
     }
 
 };

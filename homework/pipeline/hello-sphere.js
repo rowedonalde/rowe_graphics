@@ -66,6 +66,12 @@
             color: { r: 0, g: 0, b: 1 },
             vertices: Shapes.sphere()['fan1'],
             mode: gl.TRIANGLE_FAN
+        },
+        
+        {
+            color: { r: 0, g: 1, b: 0},
+            vertices: Shapes.sphere()['fan2'],
+            mode: gl.TRIANGLE_FAN
         }
     ];
 
