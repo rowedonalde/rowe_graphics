@@ -103,6 +103,46 @@ var Shapes = {
         }
 
         return result;
+    },
+    
+    /*
+     * Returns the vertices for a sphere
+     */
+    sphere: function () {
+        //Constant by which a degree value can be multiplied to convert it to
+        //radians. Useful here since the JS trig functions take and return RAD
+        var degreesToRadians = Math.PI / 180;
+        
+        //The array holding the coordinates of all vertices except the poles
+        //in the order necessary to connect them in a "STRIP" pattern
+        var stripVertices = Array();
+
+        
+        
+        //Variables that hold the x, y, and z coordinates of a given vertex:
+        var x, y, z;
+        
+        //Draw everything but the poles:
+        for (var phi = -180; phi <= 80; phi += 20) {
+            var phiR = phi * degreesToRadians;
+            var phiR20 = (phi + 20) * degreesToRadians;
+            
+            for (var theta = -180; theta <= 180; theta += 20) {
+                var thetaR = theta * degreesToRadians;
+                
+                //Calculate and push the vertex on this circle:
+                x = Math.sin(thetaR) * Math.cos(phiR);
+                y = Math.cos(thetaR) * Math.cos(phiR);
+                z = Math.sin(phiR);
+                stripVertices = stripVertices.concat(x, y, z);
+                
+                //Calculate and push the vertex on the next circle:
+                x = Math.sin(thetaR) * Math.cos(phiR20);
+                y = Math.cos(thetaR) * Math.cos(phiR20);
+                z = Math.sin(phiR20);
+                stripVertices = stripVertices.concat(x, y, z);
+            }
+        }
     }
 
 };
