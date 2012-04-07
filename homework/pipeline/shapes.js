@@ -166,7 +166,7 @@ var Shapes = {
         
         //Return an object containing both the strip patterns and
         //the poles:
-        return {strip: stripVertices; fan1: pole1Vertices};
+        return {strip: stripVertices, fan1: pole1Vertices};
     }
 
 };

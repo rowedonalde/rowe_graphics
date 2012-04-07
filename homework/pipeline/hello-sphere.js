@@ -57,9 +57,15 @@
         },*/
         
         {
-            color: { r: 1, g: 0, b: 0.5 },
+            color: { r: 1, g: 0, b: 0 },
             vertices: Shapes.sphere()['strip'],
             mode: gl.TRIANGLE_STRIP
+        },
+        
+        {
+            color: { r: 0, g: 0, b: 1 },
+            vertices: Shapes.sphere()['fan1'],
+            mode: gl.TRIANGLE_FAN
         }
     ];
 
