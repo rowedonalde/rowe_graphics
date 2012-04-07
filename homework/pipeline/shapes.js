@@ -143,6 +143,10 @@ var Shapes = {
                 stripVertices = stripVertices.concat(x, y, z);
             }
         }
+        
+        //Return an object containing both the strip patterns and
+        //the poles:
+        return {strip: stripVertices};
     }
 
 };
