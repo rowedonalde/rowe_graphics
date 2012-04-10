@@ -55,13 +55,14 @@
             vertices: Shapes.toRawLineArray(Shapes.icosahedron()),
             mode: gl.LINES
         },*/
-        
+
         {
             color: { r: 1, g: 0, b: 0 },
             vertices: Shapes.sphere()['strip'],
             mode: gl.TRIANGLE_STRIP
         },
         
+        // JD: See my comment in shapes.js regarding your poles.
         {
             color: { r: 0, g: 0, b: 1 },
             vertices: Shapes.sphere()['fan1'],

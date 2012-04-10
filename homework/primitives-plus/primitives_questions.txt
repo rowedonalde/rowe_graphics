@@ -31,3 +31,5 @@ Assignment 0306
    progress at that point. For each pixel between edges in this row, the blend
    progress should be found from the left edge point to the right edge point,
    and the pixel drawer should use that color, blending from edge to edge.
+
+# JD: Wow, everything here is quite well said.  Better late than never  :)

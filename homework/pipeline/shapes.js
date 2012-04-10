@@ -111,6 +111,8 @@ var Shapes = {
     sphere: function () {
         //Constant by which a degree value can be multiplied to convert it to
         //radians. Useful here since the JS trig functions take and return RAD
+        // JD: You need only calculate this once, either as
+        //     a property or as a local variable (safer).
         var degreesToRadians = Math.PI / 180;
         
         //The array holding the coordinates of all vertices except the poles
@@ -123,6 +125,10 @@ var Shapes = {
         var x, y, z;
         
         //Draw everything but the poles:
+        // JD: Note about the variables used in loops: remember that
+        //     all JavaScript variables have function-level scope,
+        //     and so to match this you should declare all variables
+        //     at the beginning of the function.
         for (var phi = -180; phi <= 80; phi += 20) {
             var phiR = phi * degreesToRadians;
             var phiR20 = (phi + 20) * degreesToRadians;
@@ -145,6 +151,7 @@ var Shapes = {
         }
         
         //Constants for RAD values of sine and cosine of 80 deg:
+        // JD: More constant candidates, as you mention.
         var sin80 = Math.sin(80 * degreesToRadians);
         var cos80 = Math.cos(80 * degreesToRadians);
         
@@ -172,6 +179,9 @@ var Shapes = {
         pole2Vertices = pole2Vertices.concat(0, 0, -1);
         
         //Add the near ring:
+        // JD: I think I see your problem...far as I can tell, these
+        //     vertices are identical to the vertices above---the
+        //     only difference in your code is the theta increment!
         for (var theta = -180; theta <= 180; theta += 20) {
             var thetaR = theta * degreesToRadians;
             x = Math.sin(thetaR) * cos80;

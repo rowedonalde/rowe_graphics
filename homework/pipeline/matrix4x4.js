@@ -13,7 +13,7 @@
  *              and dz.
  * - scale: Scales a Matrix4x4 object.
  */
-var Matrix4x4 = function(rawMatrix){
+var Matrix4x4 = function (rawMatrix) {
   //Some constants:
   var rowLength = 4;
   var colHeight = 4;
@@ -35,9 +35,10 @@ var Matrix4x4 = function(rawMatrix){
   }
   
   //Translate the given 1-d 16-long array into the 4x4 matrix:
-  for (var row = 0; row < colHeight; row++)
+  // JD: See note in shapes.js about loop variables.
+  for (var row = 0; row < colHeight; row += 1) // JD: += preferred in JavaScript.
   {
-    for (var col = 0; col < rowLength; col++)
+    for (var col = 0; col < rowLength; col += 1)
     {
       //The current index of rawMatrix corresponding to this.matrix[i][j]:
       var currentIndex = row*rowLength + col;
@@ -63,16 +64,16 @@ var Matrix4x4 = function(rawMatrix){
     //For each row i of firstMatrix, go through each column c of secondMatrix
     //and multiply each element j in i by the j'th element of c. Take the sum
     //of all these values and place it in product[i][c]:
-    for (var firstMatrixRow = 0; firstMatrixRow < colHeight; firstMatrixRow++)
+    for (var firstMatrixRow = 0; firstMatrixRow < colHeight; firstMatrixRow += 1)
     {
-      for (var secondMatrixCol = 0; secondMatrixCol < rowLength; secondMatrixCol++)
+      for (var secondMatrixCol = 0; secondMatrixCol < rowLength; secondMatrixCol += 1)
       {
         //The sum of the products which will ultimately be placed in
         //product.matrix[firstMatrixRow][secondMatrixCol]:
         var sum = 0;
         
         //fMCol, i.e., firstMatrixCol
-        for (var fMCol = 0; fMCol < rowLength; fMCol++)
+        for (var fMCol = 0; fMCol < rowLength; fMCol += 1)
         {
           sum += firstMatrix[firstMatrixRow][fMCol] * secondMatrix[fMCol][secondMatrixCol];
         }
@@ -91,11 +92,13 @@ var Matrix4x4 = function(rawMatrix){
   this.translate = function(dx, dy, dz)
   {
     //A 1-d representation of the vector matrix:
+    // JD: You send this right into Matrix4x4, so why not
+    //     just inline it?
     var matrix = [1, 0, 0, dx,
                   0, 1, 0, dy,
                   0, 0, 1, dz,
                   0, 0, 0, 1];
-                  
+
     return new Matrix4x4(matrix);
   };
   

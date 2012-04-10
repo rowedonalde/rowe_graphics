@@ -436,12 +436,11 @@ var Primitives = {
         
         //The color of the point with the lesser y-value and with the greater
         //y-value, respectively:
-        this.topColor = (p1.y < p2.y) ? c1, c2;
-        this.bottomColor = (p1.y < p2.y) ? c2, c1;
+        this.topColor = (p1.y < p2.y) ? c1 : c2;    // JD: Whoa, you had a comma here.
+        this.bottomColor = (p1.y < p2.y) ? c2 : c1; // JD: Ditto.
         
         //Calculate the color for a given y-value:
-        this.colorAtY = function(y)
-        {
+        this.colorAtY = function (y) {
             var currentColor = new Array(3);
             
             for (var i = 0; i < 3; i++)
