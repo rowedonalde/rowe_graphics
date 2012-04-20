@@ -182,11 +182,11 @@ var Shapes = {
         // JD: I think I see your problem...far as I can tell, these
         //     vertices are identical to the vertices above---the
         //     only difference in your code is the theta increment!
-        for (var theta = -180; theta <= 180; theta += 20) {
+        for (var theta = -180; theta <= 180; theta += 10) {
             var thetaR = theta * degreesToRadians;
             x = Math.sin(thetaR) * cos80;
             y = Math.cos(thetaR) * cos80;
-            z = sin80;
+            z = -sin80;
             
             pole2Vertices = pole2Vertices.concat(x, y, z);
         }
