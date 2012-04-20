@@ -115,6 +115,9 @@ var Shapes = {
         //     a property or as a local variable (safer).
         var degreesToRadians = Math.PI / 180;
         
+        //Loop variable declarations:
+        var phi, phiR, phiR20, theta, thetaR;
+        
         //The array holding the coordinates of all vertices except the poles
         //in the order necessary to connect them in a "STRIP" pattern
         var stripVertices = Array();
@@ -125,16 +128,12 @@ var Shapes = {
         var x, y, z;
         
         //Draw everything but the poles:
-        // JD: Note about the variables used in loops: remember that
-        //     all JavaScript variables have function-level scope,
-        //     and so to match this you should declare all variables
-        //     at the beginning of the function.
-        for (var phi = -180; phi <= 80; phi += 20) {
-            var phiR = phi * degreesToRadians;
-            var phiR20 = (phi + 20) * degreesToRadians;
+        for (phi = -180; phi <= 80; phi += 20) {
+            phiR = phi * degreesToRadians;
+            phiR20 = (phi + 20) * degreesToRadians;
             
-            for (var theta = -180; theta <= 180; theta += 20) {
-                var thetaR = theta * degreesToRadians;
+            for (theta = -180; theta <= 180; theta += 20) {
+                thetaR = theta * degreesToRadians;
                 
                 //Calculate and push the vertex on this circle:
                 x = Math.sin(thetaR) * Math.cos(phiR);
@@ -163,8 +162,8 @@ var Shapes = {
         pole1Vertices = pole1Vertices.concat(0, 0, 1);
         
         //Add the far ring:
-        for (var theta = -180; theta <= 180; theta += 10) {
-            var thetaR = theta * degreesToRadians;
+        for (theta = -180; theta <= 180; theta += 10) {
+            thetaR = theta * degreesToRadians;
             x = Math.sin(thetaR) * cos80;
             y = Math.cos(thetaR) * cos80;
             z = sin80;
@@ -179,11 +178,8 @@ var Shapes = {
         pole2Vertices = pole2Vertices.concat(0, 0, -1);
         
         //Add the near ring:
-        // JD: I think I see your problem...far as I can tell, these
-        //     vertices are identical to the vertices above---the
-        //     only difference in your code is the theta increment!
-        for (var theta = -180; theta <= 180; theta += 10) {
-            var thetaR = theta * degreesToRadians;
+        for (theta = -180; theta <= 180; theta += 10) {
+            thetaR = theta * degreesToRadians;
             x = Math.sin(thetaR) * cos80;
             y = Math.cos(thetaR) * cos80;
             z = -sin80;
