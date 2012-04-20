@@ -38,15 +38,15 @@ var Matrix4x4 = function (rawMatrix) {
   }
   
   //Translate the given 1-d 16-long array into the 4x4 matrix:
-  // JD: See note in shapes.js about loop variables.
-  for (row = 0; row < colHeight; row += 1) // JD: += preferred in JavaScript.
+  for (col = 0; col < rowLength; col += 1) // JD: += preferred in JavaScript.
   {
-    for (col = 0; col < rowLength; col += 1)
+    for (row = 0; row < colHeight; row += 1)
     {
       //The current index of rawMatrix corresponding to this.matrix[i][j]:
-      currentIndex = row*rowLength + col;
+      //currentIndex = row*rowLength + col;
+      currentIndex = col*colHeight + row;
       
-      this.matrix[row][col] = rawMatrix[currentIndex];
+      this.matrix[col][row] = rawMatrix[currentIndex];
     }
   }
   
@@ -66,7 +66,7 @@ var Matrix4x4 = function (rawMatrix) {
     firstMatrix = firstMatrix.matrix;
     secondMatrix = secondMatrix.matrix;
     
-    //Perform the actual matrix multiplication and store the result in pruduct.
+    //Perform the actual matrix multiplication and store the result in product.
     //For each row i of firstMatrix, go through each column c of secondMatrix
     //and multiply each element j in i by the j'th element of c. Take the sum
     //of all these values and place it in product[i][c]:
@@ -75,16 +75,16 @@ var Matrix4x4 = function (rawMatrix) {
       for (secondMatrixCol = 0; secondMatrixCol < rowLength; secondMatrixCol += 1)
       {
         //The sum of the products which will ultimately be placed in
-        //product.matrix[firstMatrixRow][secondMatrixCol]:
+        //product.matrix[secondMatrixCol][firstMatrixRow]:
         sum = 0;
         
         //fMCol, i.e., firstMatrixCol
         for (fMCol = 0; fMCol < rowLength; fMCol += 1)
         {
-          sum += firstMatrix[firstMatrixRow][fMCol] * secondMatrix[fMCol][secondMatrixCol];
+          sum += firstMatrix[fMCol][firstMatrixRow] * secondMatrix[secondMatrixCol][fMCol];
         }
         
-        product.matrix[firstMatrixRow][secondMatrixCol] = sum;
+        product.matrix[secondMatrixCol][firstMatrixRow] = sum;
       }
     }
     
@@ -100,12 +100,13 @@ var Matrix4x4 = function (rawMatrix) {
     //A 1-d representation of the vector matrix:
     // JD: You send this right into Matrix4x4, so why not
     //     just inline it?
-    var matrix = [1, 0, 0, dx,
-                  0, 1, 0, dy,
-                  0, 0, 1, dz,
-                  0, 0, 0, 1];
+    /*var matrix = [1, 0, 0, dx,
+                    0, 1, 0, dy,
+                    0, 0, 1, dz,
+                    0, 0, 0, 1];*/
 
-    return new Matrix4x4(matrix);
+    //return new Matrix4x4(matrix);
+    return new Matrix4x4([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, dx, dy, dz, 1]);
   };
   
   /**
@@ -114,11 +115,12 @@ var Matrix4x4 = function (rawMatrix) {
    */
   this.scale(sx, sy, sz)
   {
-    var matrix = [sx, 0, 0, 0,
-                  0, sy, 0, 0,
-                  0, 0, sz, 0,
-                  0, 0, 0, 1];
+    /*var matrix = [sx, 0, 0, 0,
+                    0, sy, 0, 0,
+                    0, 0, sz, 0,
+                    0, 0, 0, 1];*/
                   
-    return new Matrix4x4(matrix);
+    //return new Matrix4x4(matrix);
+    return new Matrix4x4([sx, 0, 0, 0, 0, sy, 0, 0, 0, 0, sz, 0, 0, 0, 0, 1]);
   };
 };
