@@ -18,11 +18,14 @@ var Matrix4x4 = function (rawMatrix) {
   var rowLength = 4;
   var colHeight = 4;
   
+  //Loop variables:
+  var row, col, currentIndex;
+  
   //This is the 2-d, 4x4 array that will represent the actual 4x4 matrix:
-  this.matrix = [new Array(rowLength),
-                 new Array(rowLength),
-                 new Array(rowLength),
-                 new Array(rowLength)];
+  this.matrix = [new Array(colHeight),
+                 new Array(colHeight),
+                 new Array(colHeight),
+                 new Array(colHeight)];
                  
   //If rawMatrix wasn't specified, initialize it as an empty array:
   rawMatrix = rawMatrix || new Array(rowLength * colHeight);
@@ -36,12 +39,12 @@ var Matrix4x4 = function (rawMatrix) {
   
   //Translate the given 1-d 16-long array into the 4x4 matrix:
   // JD: See note in shapes.js about loop variables.
-  for (var row = 0; row < colHeight; row += 1) // JD: += preferred in JavaScript.
+  for (row = 0; row < colHeight; row += 1) // JD: += preferred in JavaScript.
   {
-    for (var col = 0; col < rowLength; col += 1)
+    for (col = 0; col < rowLength; col += 1)
     {
       //The current index of rawMatrix corresponding to this.matrix[i][j]:
-      var currentIndex = row*rowLength + col;
+      currentIndex = row*rowLength + col;
       
       this.matrix[row][col] = rawMatrix[currentIndex];
     }
@@ -53,6 +56,9 @@ var Matrix4x4 = function (rawMatrix) {
    */
   this.multiply = function(firstMatrix, secondMatrix)
   {
+    //Loop variables:
+    var firstMatrixRow, secondMatrixCol, sum, fmCol;
+    
     //A new bare Matrix4x4 which we will ultimately return;
     var product = new Matrix4x4();
     
@@ -64,16 +70,16 @@ var Matrix4x4 = function (rawMatrix) {
     //For each row i of firstMatrix, go through each column c of secondMatrix
     //and multiply each element j in i by the j'th element of c. Take the sum
     //of all these values and place it in product[i][c]:
-    for (var firstMatrixRow = 0; firstMatrixRow < colHeight; firstMatrixRow += 1)
+    for (firstMatrixRow = 0; firstMatrixRow < colHeight; firstMatrixRow += 1)
     {
-      for (var secondMatrixCol = 0; secondMatrixCol < rowLength; secondMatrixCol += 1)
+      for (secondMatrixCol = 0; secondMatrixCol < rowLength; secondMatrixCol += 1)
       {
         //The sum of the products which will ultimately be placed in
         //product.matrix[firstMatrixRow][secondMatrixCol]:
-        var sum = 0;
+        sum = 0;
         
         //fMCol, i.e., firstMatrixCol
-        for (var fMCol = 0; fMCol < rowLength; fMCol += 1)
+        for (fMCol = 0; fMCol < rowLength; fMCol += 1)
         {
           sum += firstMatrix[firstMatrixRow][fMCol] * secondMatrix[fMCol][secondMatrixCol];
         }
