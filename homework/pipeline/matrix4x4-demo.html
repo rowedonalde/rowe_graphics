@@ -10,71 +10,134 @@
 <script src="matrix4x4.js"></script>
 
 <style>
+    #matrixwrapper {
+        display: block;
+    }
+    
     .matrixinput {
         float: left;
         border-style: solid;
         padding: 10px;
     }
+    
     .matrixinput input {
         width: 30px;
+    }
+    
+    .matrixinput button {
+        margin-top: 10px;
+    }
+    
+    td {
+        width: 30px;
+        border-style: solid
+        border-width: 1px;
+    }
+    
+    #resultmatrix {
+        display: block;
+        clear: left;
     }
 </style>
 
 </head>
 
 <body>
-<!-- First Matrix input -->
-<div id="firstmatrix" class="matrixinput">
-    <h3>First Matrix</h3>
-    <input type="text" id="first0" />
-    <input type="text" id="first4" />
-    <input type="text" id="first8" />
-    <input type="text" id="first12" />
-    <br/>
-    <input type="text" id="first1" />
-    <input type="text" id="first5" />
-    <input type="text" id="first9" />
-    <input type="text" id="first13" />
-    <br/>
-    <input type="text" id="first2" />
-    <input type="text" id="first6" />
-    <input type="text" id="first10" />
-    <input type="text" id="first14" />
-    <br/>
-    <input type="text" id="first3" />
-    <input type="text" id="first7" />
-    <input type="text" id="first11" />
-    <input type="text" id="first15" />
-    <br/>
-    <!--button id="firstmatrix-->
-</div>
 
-<!-- Second Matrix input -->
-<div id="secondmatrix" class="matrixinput">
-    <h3>Second Matrix</h3>
-    <input type="text" id="second0" />
-    <input type="text" id="second4" />
-    <input type="text" id="second8" />
-    <input type="text" id="second12" />
-    <br/>
-    <input type="text" id="second1" />
-    <input type="text" id="second5" />
-    <input type="text" id="second9" />
-    <input type="text" id="second13" />
-    <br/>
-    <input type="text" id="second2" />
-    <input type="text" id="second6" />
-    <input type="text" id="second10" />
-    <input type="text" id="second14" />
-    <br/>
-    <input type="text" id="second3" />
-    <input type="text" id="second7" />
-    <input type="text" id="second11" />
-    <input type="text" id="second15" />
-</div>
+    <!-- First Matrix input -->
+    <div id="firstmatrix" class="matrixinput">
+        <h3>First Matrix</h3>
+        <input type="text" id="first0" />
+        <input type="text" id="first4" />
+        <input type="text" id="first8" />
+        <input type="text" id="first12" />
+        <br/>
+        <input type="text" id="first1" />
+        <input type="text" id="first5" />
+        <input type="text" id="first9" />
+        <input type="text" id="first13" />
+        <br/>
+        <input type="text" id="first2" />
+        <input type="text" id="first6" />
+        <input type="text" id="first10" />
+        <input type="text" id="first14" />
+        <br/>
+        <input type="text" id="first3" />
+        <input type="text" id="first7" />
+        <input type="text" id="first11" />
+        <input type="text" id="first15" />
+        <br/>
+        
+        <!-- Translate -->
+        <button id="translate">Translate</button>
+        <input type="text" id="dx" placeholder="dx" />
+        <input type="text" id="dy" placeholder="dy" />
+        <input type="text" id="dz" placeholder="dz" />
+        <br/>
+        <!-- Scale -->
+        <button id="scale">Scale</button>
+        <input type="text" id="sx" placeholder="sx" />
+        <input type="text" id="sy" placeholder="sy" />
+        <input type="text" id="sz" placeholder="sz" />
+        
+    </div>
+    
+    <!-- Second Matrix input -->
+    <div id="secondmatrix" class="matrixinput">
+        <h3>Second Matrix</h3>
+        <input type="text" id="second0" />
+        <input type="text" id="second4" />
+        <input type="text" id="second8" />
+        <input type="text" id="second12" />
+        <br/>
+        <input type="text" id="second1" />
+        <input type="text" id="second5" />
+        <input type="text" id="second9" />
+        <input type="text" id="second13" />
+        <br/>
+        <input type="text" id="second2" />
+        <input type="text" id="second6" />
+        <input type="text" id="second10" />
+        <input type="text" id="second14" />
+        <br/>
+        <input type="text" id="second3" />
+        <input type="text" id="second7" />
+        <input type="text" id="second11" />
+        <input type="text" id="second15" />
+    </div>
 
+
+
+<!-- Result Matrix -->
 <div id="resultmatrix">
-
+    <h3>Multiplication Result Matrix</h3>
+    
+    <table>
+        <tr>
+            <td id="result0"></td>
+            <td id="result4"></td>
+            <td id="result8"></td>
+            <td id="result12"></td>
+        </tr>
+        <tr>
+            <td id="result1"></td>
+            <td id="result5"></td>
+            <td id="result9"></td>
+            <td id="result13"></td>
+        </tr>
+        <tr>
+            <td id="result2"></td>
+            <td id="result6"></td>
+            <td id="result10"></td>
+            <td id="result14"></td>
+        </tr>
+        <tr>
+            <td id="result3"></td>
+            <td id="result7"></td>
+            <td id="result11"></td>
+            <td id="result15"></td>
+        </tr>
+    </table>
 </div>
 </body>
 
