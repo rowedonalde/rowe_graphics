@@ -9,9 +9,10 @@ $(document).ready(function()
   //Multiply button:
   $('#multiply').click(function()
   {
-    var i, col, row, currentCell;
     var colHeight = 4;
     var rowLength = 4;
+    
+    var i, col, row, currentCell;
     var firstRaw = Array();
     var secondRaw = Array();
     
@@ -43,5 +44,37 @@ $(document).ready(function()
         console.log('writing to #result' + currentCell + ': ' + result.matrix[col][row]);
       }
     }
+  });
+  
+  //Utility function for taking a Matrix4x4 object and filling Second Matrix:
+  var fillSecondMatrix = function(matrix4x4)
+  {
+    var i, col, row, currentCell;
+    
+    for (col = 0; col < rowLength; col += 1)
+    {
+      for (row = 0; row < colHeight; row += 1)
+      {
+        currentCell = row + col*rowLength;
+        $('#second' + currentCell).val(matrix4x4.matrix[col][row]);
+      }
+    }
+  };
+  
+  //Translate button:
+  $('#translate').click(function()
+  {
+    //Get the input:
+    var dx = $('#dx').val() || 1;
+    var dy = $('#dy').val() || 1;
+    var dz = $('#dz').val() || 1;
+    
+    //Generate the matrix:
+    var result = new Matrix4x4();
+    result = result.translate(dx, dy, dz);
+      console.log(result.matrix);
+    
+    //Display it:
+    fillSecondMatrix(result);
   });
 });
