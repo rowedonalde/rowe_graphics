@@ -65,14 +65,30 @@ $(document).ready(function()
   $('#translate').click(function()
   {
     //Get the input:
-    var dx = $('#dx').val() || 1;
-    var dy = $('#dy').val() || 1;
-    var dz = $('#dz').val() || 1;
+    var dx = $('#dx').val() || 0;
+    var dy = $('#dy').val() || 0;
+    var dz = $('#dz').val() || 0;
     
     //Generate the matrix:
     var result = new Matrix4x4();
     result = result.translate(dx, dy, dz);
       console.log(result.matrix);
+    
+    //Display it:
+    fillSecondMatrix(result);
+  });
+  
+  //Scale button:
+  $('#scale').click(function()
+  {
+    //Get the input:
+    var sx = $('#sx').val() || 1;
+    var sy = $('#sy').val() || 1;
+    var sz = $('#sz').val() || 1;
+    
+    //Generate the matrix:
+    var result = new Matrix4x4();
+    result = result.scale(sx, sy, sz);
     
     //Display it:
     fillSecondMatrix(result);
