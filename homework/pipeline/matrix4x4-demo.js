@@ -47,7 +47,7 @@ $(document).ready(function()
   });
   
   //Utility function for taking a Matrix4x4 object and filling Second Matrix:
-  var fillSecondMatrix = function(matrix4x4)
+  var fillMatrix = function(matrix4x4)
   {
     var i, col, row, currentCell;
     
@@ -56,7 +56,7 @@ $(document).ready(function()
       for (row = 0; row < colHeight; row += 1)
       {
         currentCell = row + col*rowLength;
-        $('#second' + currentCell).val(matrix4x4.matrix[col][row]);
+        $('#first' + currentCell).val(matrix4x4.matrix[col][row]);
       }
     }
   };
@@ -75,7 +75,7 @@ $(document).ready(function()
       console.log(result.matrix);
     
     //Display it:
-    fillSecondMatrix(result);
+    fillMatrix(result);
   });
   
   //Scale button:
@@ -91,6 +91,6 @@ $(document).ready(function()
     result = result.scale(sx, sy, sz);
     
     //Display it:
-    fillSecondMatrix(result);
+    fillMatrix(result);
   });
 });
