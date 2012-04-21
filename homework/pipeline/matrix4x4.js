@@ -15,8 +15,8 @@
  */
 var Matrix4x4 = function (rawMatrix) {
   //Some constants:
-  var rowLength = 4;
-  var colHeight = 4;
+  rowLength = 4;
+  colHeight = 4;
   
   //Loop variables:
   var row, col, currentIndex;
@@ -28,13 +28,13 @@ var Matrix4x4 = function (rawMatrix) {
                  new Array(colHeight)];
                  
   //If rawMatrix wasn't specified, initialize it as an empty array:
-  rawMatrix = rawMatrix || new Array(rowLength * colHeight);
+  this.rawMatrix = rawMatrix || new Array(rowLength * colHeight);
   
   //Make sure the given rawMatrix has at least 16 elements.
   //If not, fill the rest with 0s:
-  while (rawMatrix.length < rowLength * colHeight)
+  while (this.rawMatrix.length < rowLength * colHeight)
   {
-    rawMatrix.push(0);
+    this.rawMatrix.push(0);
   }
   
   //Translate the given 1-d 16-long array into the 4x4 matrix:
@@ -46,13 +46,29 @@ var Matrix4x4 = function (rawMatrix) {
       //currentIndex = row*rowLength + col;
       currentIndex = col*colHeight + row;
       
-      this.matrix[col][row] = rawMatrix[currentIndex];
+      this.matrix[col][row] = this.rawMatrix[currentIndex];
     }
   }
   
   /**
+   * This static method returns the constant colHeight
+   */
+  this.getColHeight = function()
+  {
+    return colHeight;
+  };
+  
+  /**
+   * This static method returns the constant rowLength
+   */
+  this.getRowLength = function()
+  {
+    return rowLength;
+  };
+  
+  /**
    * This static method takes two Matrix4x4 objects.
-   * The method performs matrix multiplication on 
+   * The method performs matrix multiplication on them and returns the result.
    */
   this.multiply = function(firstMatrix, secondMatrix)
   {
@@ -113,7 +129,7 @@ var Matrix4x4 = function (rawMatrix) {
    * This static method returns a new Matrix4x4 object representing the
    * vector by which another matrix could be scaled.
    */
-  this.scale(sx, sy, sz)
+  this.scale = function(sx, sy, sz)
   {
     /*var matrix = [sx, 0, 0, 0,
                     0, sy, 0, 0,

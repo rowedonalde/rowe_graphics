@@ -7,7 +7,8 @@
 <title>Matrix4x4 Demo</title>
 
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-<script src="matrix4x4.js"></script>
+
+<script src="matrix4x4-demo.js"></script>
 
 <style>
     #matrixwrapper {
@@ -25,7 +26,7 @@
     }
     
     .matrixinput button {
-        margin-top: 10px;
+        /*margin-top: 10px;*/
     }
     
     td {
@@ -68,6 +69,7 @@
         <input type="text" id="first15" />
         <br/>
         
+        <h4>Generate a Second Matrix:</h4>
         <!-- Translate -->
         <button id="translate">Translate</button>
         <input type="text" id="dx" placeholder="dx" />
@@ -111,7 +113,7 @@
 <!-- Result Matrix -->
 <div id="resultmatrix">
     <h3>Multiplication Result Matrix</h3>
-    
+    <button id="multiply">Multiply the Matrices</button>
     <table>
         <tr>
             <td id="result0"></td>
@@ -139,6 +141,7 @@
         </tr>
     </table>
 </div>
+<script src="matrix4x4.js"></script>
 </body>
 
 <html>
