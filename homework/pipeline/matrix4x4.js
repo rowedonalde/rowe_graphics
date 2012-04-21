@@ -116,10 +116,10 @@ var Matrix4x4 = function (rawMatrix) {
     //A 1-d representation of the vector matrix:
     // JD: You send this right into Matrix4x4, so why not
     //     just inline it?
-    /*var matrix = [1, 0, 0, dx,
+    /*format--      1, 0, 0, dx,
                     0, 1, 0, dy,
                     0, 0, 1, dz,
-                    0, 0, 0, 1];*/
+                    0, 0, 0, 1*/
 
     //return new Matrix4x4(matrix);
     return new Matrix4x4([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, dx, dy, dz, 1]);
@@ -131,10 +131,10 @@ var Matrix4x4 = function (rawMatrix) {
    */
   this.scale = function(sx, sy, sz)
   {
-    /*var matrix = [sx, 0, 0, 0,
+    /*format --     sx, 0, 0, 0,
                     0, sy, 0, 0,
                     0, 0, sz, 0,
-                    0, 0, 0, 1];*/
+                    0, 0, 0, 1*/
                   
     //return new Matrix4x4(matrix);
     return new Matrix4x4([sx, 0, 0, 0, 0, sy, 0, 0, 0, 0, sz, 0, 0, 0, 0, 1]);
