@@ -191,6 +191,42 @@ var Shapes = {
         //Return an object containing both the strip patterns and
         //the poles:
         return {strip: stripVertices, fan1: pole1Vertices, fan2: pole2Vertices};
+    },
+    
+    /*
+     * Returns the vertices for a tetrahedron
+     */
+    tetrahedron: function() {
+        var sideVertices, baseVertices, baseCenter, center, peak, sideLength,
+            height, altitude;
+            
+        sideLength = 1;
+        
+        //via http://en.wikipedia.org/wiki/Tetrahedron#Formulas_for_a_regular_tetrahedron:
+        height = Math.sqrt(6) / 3 * sideLength;
+        //http://en.wikipedia.org/wiki/Equilateral_triangle:
+        altitude = Math.sqrt(3) / 2 * sideLength;
+        
+        center = [0, 0, 0];
+        peak = [center[0], center[1] + height/2, center[2]];
+        baseCenter = [center[0], center[1] - height/2, center[2]];
+        
+        //First base point:
+        baseVertices = [baseCenter[0], baseCenter[1], baseCenter[2] + altitude/2];
+        //Other base points:
+        baseVertices = baseVertices.concat([baseCenter[0] + sideLength/2,
+                                            baseCenter[1],
+                                            baseCenter[2] - altitude/2]);
+        baseVertices = baseVertices.concat([baseCenter[0] - sideLength/2,
+                                            baseCenter[1],
+                                            baseCenter[2] - altitude/2]);
+        
+        //Construct the sides by pushing the peak on the beginning of the base:
+        sideVertices = peak.concat(sideVertices);
+        
+        //Return each group of vertices with instructions to fan:
+        return {fan1: sideVertices, fan2: baseVertices};
+        
     }
 
 };
