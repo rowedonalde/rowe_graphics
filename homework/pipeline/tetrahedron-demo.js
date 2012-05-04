@@ -131,7 +131,7 @@
             mode: gl.LINES
         },*/
 
-        {
+        /*{
             color: { r: 1, g: 0, b: 0 },
             vertices: Shapes.sphere()['strip'],
             mode: gl.TRIANGLE_STRIP
@@ -147,6 +147,18 @@
         {
             color: { r: 0, g: 1, b: 0},
             vertices: Shapes.sphere()['fan2'],
+            mode: gl.TRIANGLE_FAN
+        },*/
+        
+        {
+            color: { r: 0, g: 1, b: 0},
+            vertices: Shapes.tetrahedron()['fan1'],
+            mode: gl.TRIANGLE_FAN
+        },
+        
+        {
+            color: { r: 1, g: 0, b: 0},
+            vertices: Shapes.tetrahedron()['fan2'],
             mode: gl.TRIANGLE_FAN
         }
     ];
@@ -261,4 +273,4 @@
         }
     });
 
-}(document.getElementById("hello-webgl")));
+}(document.getElementById("spinning-tetrahedron")));
