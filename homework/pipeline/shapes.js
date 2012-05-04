@@ -198,7 +198,7 @@ var Shapes = {
      */
     tetrahedron: function() {
         var sideVertices, baseVertices, baseCenter, center, peak, sideLength,
-            height, altitude;
+            height, altitude, radius, i;
             
         sideLength = 1;
         
@@ -206,23 +206,39 @@ var Shapes = {
         height = Math.sqrt(6) / 3 * sideLength;
         //http://en.wikipedia.org/wiki/Equilateral_triangle:
         altitude = Math.sqrt(3) / 2 * sideLength;
+        //Radius of circumscribed circle:
+        radius = Math.sqrt(3) / 3 * sideLength;
         
         center = [0, 0, 0];
         peak = [center[0], center[1] + height/2, center[2]];
         baseCenter = [center[0], center[1] - height/2, center[2]];
         
         //First base point:
-        baseVertices = [baseCenter[0], baseCenter[1], baseCenter[2] + altitude/2];
+        baseVertices = [baseCenter[0], baseCenter[1], baseCenter[2] + radius];
         //Other base points:
-        baseVertices = baseVertices.concat([baseCenter[0] + sideLength/2,
+        baseVertices = baseVertices.concat(baseCenter[0] + sideLength/2,
                                             baseCenter[1],
-                                            baseCenter[2] - altitude/2]);
-        baseVertices = baseVertices.concat([baseCenter[0] - sideLength/2,
+                                            baseCenter[2] - (altitude - radius));
+        baseVertices = baseVertices.concat(baseCenter[0] - sideLength/2,
                                             baseCenter[1],
-                                            baseCenter[2] - altitude/2]);
+                                            baseCenter[2] - (altitude - radius));
         
         //Construct the sides by pushing the peak on the beginning of the base:
-        sideVertices = peak.concat(sideVertices);
+        //sideVertices = peak.concat(sideVertices);
+        sideVertices = peak;
+        for (i = 0; i < baseVertices.length; i += 1) {
+            sideVertices = sideVertices.concat(baseVertices[i]);
+        }
+        
+            //test:
+            console.log("Base Vertices:");
+            for (i = 0; i < baseVertices.length; i += 1) {
+                console.log(baseVertices[i]);
+            }
+            console.log("Side Vertices:");
+            for (i = 0; i < sideVertices.length; i += 1) {
+                console.log(sideVertices[i]);
+            }
         
         //Return each group of vertices with instructions to fan:
         return {fan1: sideVertices, fan2: baseVertices};
