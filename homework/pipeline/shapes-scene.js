@@ -155,15 +155,40 @@
     var tetra1Side = Shapes.tetrahedron()['fan1'];
     var tetra1Base = Shapes.tetrahedron()['fan2'];
     //Concatenate the transformation matrices:
-    //Rotate:
-    var tetra1Rot = matrix4x4Static.rotate('x', 90);
-    var tetra1Scl = matrix4x4Static.scale(.5, .5, .5);
-    var tetra1Tran = matrix4x4Static.translate(1, 1, 1);
-    var tetra1Concat = matrix4x4Static.concatenate([tetra1Rot, tetra1Scl, tetra1Tran]);
-
-    tetra1Side = applyMatrix(tetra1Side, tetra1Concat);
-    tetra1Base = applyMatrix(tetra1Base, tetra1Concat);
-
+    var tetra1Tran = matrix4x4Static.concatenate([
+        matrix4x4Static.rotate('x', 90),
+        matrix4x4Static.scale(.5, .5, .5),
+        matrix4x4Static.translate(1, 1, 1)
+    ]);
+    tetra1Side = applyMatrix(tetra1Side, tetra1Tran);
+    tetra1Base = applyMatrix(tetra1Base, tetra1Tran);
+    
+    //Squished Sphere:
+    var sphere1Body = Shapes.sphere()['strip'];
+    var sphere1Pole1 = Shapes.sphere()['fan1'];
+    var sphere1Pole2 = Shapes.sphere()['fan2'];
+    //Concatenate the transformation matrices:
+    var sphere1Tran = matrix4x4Static.concatenate([
+        matrix4x4Static.scale(.3, .1, .3),
+        matrix4x4Static.rotate('y', 45),
+        matrix4x4Static.translate(-1, -1, -1)
+    ]);
+    sphere1Body = applyMatrix(sphere1Body, sphere1Tran);
+    sphere1Pole1 = applyMatrix(sphere1Pole1, sphere1Tran);
+    sphere1Pole2 = applyMatrix(sphere1Pole1, sphere1Tran);
+    
+    //Tall tetrahedron:
+    var tetra2Side = Shapes.tetrahedron()['fan1'];
+    var tetra2Base = Shapes.tetrahedron()['fan2'];
+    //Concatenate the transformation matrices:
+    var tetra2Tran = matrix4x4Static.concatenate([
+        
+        matrix4x4Static.rotate('x', 45),
+        matrix4x4Static.scale(.2, 1.5, .2),
+        matrix4x4Static.translate(0, 0, 0)
+    ]);
+    tetra2Side = applyMatrix(tetra2Side, tetra2Tran);
+    tetra2Base = applyMatrix(tetra2Base, tetra2Tran);
     
     objectsToDraw = [
         
@@ -177,7 +202,37 @@
             color: { r: 1, g: 0, b: 0},
             vertices: tetra1Base,
             mode: gl.TRIANGLE_FAN
-        }
+        },
+        
+        {
+            color: { r: .5, g: 1, b: 1},
+            vertices: tetra2Side,
+            mode: gl.TRIANGLE_FAN
+        },
+        
+        {
+            color: { r: 1, g: .5, b: .5},
+            vertices: tetra2Base,
+            mode: gl.TRIANGLE_FAN
+        },
+        
+        {
+            color: { r: 1, g: 0, b: 1 },
+            vertices: sphere1Body,
+            mode: gl.TRIANGLE_STRIP
+        },
+        
+        {
+            color: { r: 0, g: 1, b: 1 },
+            vertices: sphere1Pole1,
+            mode: gl.TRIANGLE_FAN
+        },
+        
+        {
+            color: { r: 1, g: 1, b: 0 },
+            vertices: sphere1Pole2,
+            mode: gl.TRIANGLE_FAN
+        },
     ];
 
     // Pass the vertices to WebGL.
