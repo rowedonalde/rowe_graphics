@@ -110,7 +110,7 @@ var Matrix4x4 = function (rawMatrix) {
   };
   
   /**
-   * Returns the Matrix4x4 representing a 3-d point
+   * This static method returns the Matrix4x4 representing a 3-d point
    */
   this.point3d = function(x, y, z)
   {
@@ -121,10 +121,34 @@ var Matrix4x4 = function (rawMatrix) {
       
     */
     
-    return([0, 0, 0, 0,
-            0, 0, 0, 0,
-            0, 0, 0, 0,
-            x, y, z, 1]);
+    return new Matrix4x4([0, 0, 0, 0,
+                          0, 0, 0, 0,
+                          0, 0, 0, 0,
+                          x, y, z, 1]);
+  };
+  
+  /**
+   * This instance method returns the x-coordinate of a Matrix4x4 representing
+   * a 3-d point.
+   */
+  this.getX = function() {
+    return this.matrix[3][0];
+  };
+  
+  /**
+   * This instance method returns the y-coordinate of a Matrix4x4 representing
+   * a 3-d point.
+   */
+  this.getY = function() {
+    return this.matrix[3][1];
+  };
+  
+  /**
+   * This instance method returns the z-coordinate of a Matrix4x4 representing
+   * a 3-d point.
+   */
+  this.getZ = function() {
+    return this.matrix[3][2];
   };
   
   /**
@@ -161,7 +185,7 @@ var Matrix4x4 = function (rawMatrix) {
    * This static method returns a new Matrix 4x4 object representing the
    * vector by which another matrix could be rotated.
    */
-  this.rotate = function(theta, axis)
+  this.rotate = function(axis, theta)
   {
     var theta = theta || 0;
     var axis = axis || "x";
@@ -170,7 +194,7 @@ var Matrix4x4 = function (rawMatrix) {
     
     //For convenience:
     var cos = Math.cos;
-    var sin = Math.cos;
+    var sin = Math.sin;
     
     if (axis === "x" || axis === "X")
     {
