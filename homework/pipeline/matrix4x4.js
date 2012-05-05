@@ -136,7 +136,67 @@ var Matrix4x4 = function (rawMatrix) {
                     0, 0, sz, 0,
                     0, 0, 0, 1*/
                   
-    //return new Matrix4x4(matrix);
     return new Matrix4x4([sx, 0, 0, 0, 0, sy, 0, 0, 0, 0, sz, 0, 0, 0, 0, 1]);
+  };
+  
+  /**
+   * This static method returns a new Matrix 4x4 object representing the
+   * vector by which another matrix could be rotated.
+   */
+  this.rotate = function(theta, axis)
+  {
+    var theta = theta || 0;
+    var axis = axis || "x";
+    //Convert theta to radians:
+    theta = theta * Math.PI / 180;
+    
+    //For convenience:
+    var cos = Math.cos;
+    var sin = Math.cos;
+    
+    if (axis === "x" || axis === "X")
+    {
+      /*format --   1,     0,      0, 0
+                    0, cosTh, -sinTh, 0
+                    0, sinTh,  cosTh, 0
+                    0,     0,      0, 1
+      */
+      
+      return new Matrix4x4([1, 0, 0, 0,
+                            0, cos(theta), sin(theta), 0,
+                            0, -sin(theta), cos(theta), 0,
+                            0, 0, 0, 1]);
+    }
+    else if (axis === "y" || axis === "Y")
+    {
+      /*format --    cosTh, 0, sinTh, 0
+                         0, 1,     0, 0
+                    -sinTh, 0, cosTh, 0
+                         0, 0,     0, 1
+      */
+      
+      return new Matrix4x4([cos(theta), 0, -sin(theta), 0
+                            0, 1, 0, 0,
+                            sin(theta), 0, cos(theta), 0,
+                            0, 0, 0, 1]);
+    }
+    else if (axis === "z" || axis === "Z")
+    {
+      /*format --   cosTh, -sinTh, 0, 0
+                    sinTh,  cosTh, 0, 0
+                        0,      0, 1, 0
+                        0,      0, 0, 1
+      
+      */
+      
+      return new Matrix4x4([cos(theta), sin(theta, 0, 0,
+                            -sin(theta), cos(theta), 0, 0,
+                            0, 0, 1, 0,
+                            0, 0, 0, 1]);
+    }
+    else
+    {
+      throw "InvalidAxis";
+    }
   };
 };
