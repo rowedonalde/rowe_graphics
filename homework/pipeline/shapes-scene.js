@@ -36,6 +36,7 @@
         maxi,
         j,
         maxj,
+        currentPoint,
 
         /*
          * This code does not really belong here: it should live
@@ -104,6 +105,31 @@
                 0.0,
                 1.0
             ];
+        },
+        
+        /*
+         * This function takes a vertex coordinate array of the format
+         * [x0, y0, z0, x1, y1, z1, ..., xn, yn, zn] (i.e., the standard way)
+         * and applies the given matrix transformation to each point defined by
+         * that array.
+         * TODO: Perhaps put this in Matrix4x4 instead?         
+         */
+        applyMatrix = function(vertices, matrix) {
+            for (i = 0; i < vertices.length; i += 3) {
+                var matrix4x4Static = new Matrix4x4();
+                var currentPoint = matrix4x4Static.point3d(vertices[i],
+                                                           vertices[i + 1],
+                                                           vertices[i + 2]);
+                //Transform it:
+                currentPoint = matrix4x4Static.multiply(matrix, currentPoint);
+                
+                //Set the points into the vertices:
+                vertices[i] = currentPoint.getX();
+                vertices[i + 1] = currentPoint.getY();
+                vertices[i + 2] = currentPoint.getZ();
+            }
+            
+            return vertices;
         };
 
     // Grab the WebGL rendering context.
@@ -123,42 +149,33 @@
     gl.viewport(0, 0, canvas.width, canvas.height);
 
     // Build the objects to display.
+    var matrix4x4Static = new Matrix4x4();
+    
+    //Tetrahedron:
+    var tetra1Side = Shapes.tetrahedron()['fan1'];
+    var tetra1Base = Shapes.tetrahedron()['fan2'];
+    //Concatenate the transformation matrices:
+    //Rotate:
+    var tetra1Rot = matrix4x4Static.rotate('x', 90);
+    var tetra1Scl = matrix4x4Static.scale(.5, .5, .5);
+    var tetra1Tran = matrix4x4Static.translate(1, 1, 1);
+    var tetra1Concat = matrix4x4Static.concatenate([tetra1Rot, tetra1Scl, tetra1Tran]);
+
+    tetra1Side = applyMatrix(tetra1Side, tetra1Concat);
+    tetra1Base = applyMatrix(tetra1Base, tetra1Concat);
+
+    
     objectsToDraw = [
-
-        /*{
-            color: { r: 0, g: 0.5, b: 0 },
-            vertices: Shapes.toRawLineArray(Shapes.icosahedron()),
-            mode: gl.LINES
-        },*/
-
-        /*{
-            color: { r: 1, g: 0, b: 0 },
-            vertices: Shapes.sphere()['strip'],
-            mode: gl.TRIANGLE_STRIP
-        },
-        
-        // JD: See my comment in shapes.js regarding your poles.
-        {
-            color: { r: 0, g: 0, b: 1 },
-            vertices: Shapes.sphere()['fan1'],
-            mode: gl.TRIANGLE_FAN
-        },
         
         {
             color: { r: 0, g: 1, b: 0},
-            vertices: Shapes.sphere()['fan2'],
-            mode: gl.TRIANGLE_FAN
-        },*/
-        
-        {
-            color: { r: 0, g: 1, b: 0},
-            vertices: Shapes.tetrahedron()['fan1'],
+            vertices: tetra1Side,
             mode: gl.TRIANGLE_FAN
         },
         
         {
             color: { r: 1, g: 0, b: 0},
-            vertices: Shapes.tetrahedron()['fan2'],
+            vertices: tetra1Base,
             mode: gl.TRIANGLE_FAN
         }
     ];
@@ -273,4 +290,4 @@
         }
     });
 
-}(document.getElementById("spinning-tetrahedron")));
+}(document.getElementById("shapes-scene")));

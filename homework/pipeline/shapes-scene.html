@@ -17,7 +17,7 @@
             further functionality can be added to the software stack.
             Click the canvas to see what else is new.</p>
 
-        <canvas id="spinning-tetrahedron" width="512" height="512">
+        <canvas id="shapes-scene" width="512" height="512">
             Sorry, your web browser does not appear to support
             the <code>canvas</code> element, either.
         </canvas>
@@ -31,6 +31,10 @@
 
         <!-- Shapes is a library that generates "canned" shapes. -->
         <script src="shapes.js"></script>
+        
+        <!-- Matrix4x4 is a library that represents a 4x4 matrix and
+             transformations for it -->
+        <script src="matrix4x4.js"></script>
 
         <!-- Set up shaders: we've placed the source in script elements for
             simplicity.  Shaders are ideally kept in separate files for easier
@@ -73,6 +77,6 @@
         </script>
 
         <!-- This script sets up the specific scene for this page. -->
-        <script src="tetrahedron-demo.js"></script>
+        <script src="shapes-scene.js"></script>
   </body>
 </html>
