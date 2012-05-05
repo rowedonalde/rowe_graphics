@@ -69,6 +69,8 @@ var Matrix4x4 = function (rawMatrix) {
   /**
    * This static method takes two Matrix4x4 objects.
    * The method performs matrix multiplication on them and returns the result.
+   * Using the matrix formats in Matrix4x4, firstMatrix is the transformation
+   * and secondMatrix is the point.
    */
   this.multiply = function(firstMatrix, secondMatrix)
   {
@@ -108,14 +110,30 @@ var Matrix4x4 = function (rawMatrix) {
   };
   
   /**
+   * Returns the Matrix4x4 representing a 3-d point
+   */
+  this.point3d = function(x, y, z)
+  {
+    /*format--   0, 0, 0, x
+                 0, 0, 0, y
+                 0, 0, 0, z
+                 0, 0, 0, 1
+      
+    */
+    
+    return([0, 0, 0, 0,
+            0, 0, 0, 0,
+            0, 0, 0, 0,
+            x, y, z, 1]);
+  };
+  
+  /**
    * This static method returns a new Matrix4x4 object representing the
    * vector by which another matrix could be translated.
    */
   this.translate = function(dx, dy, dz)
   {
     //A 1-d representation of the vector matrix:
-    // JD: You send this right into Matrix4x4, so why not
-    //     just inline it?
     /*format--      1, 0, 0, dx,
                     0, 1, 0, dy,
                     0, 0, 1, dz,
@@ -175,7 +193,7 @@ var Matrix4x4 = function (rawMatrix) {
                          0, 0,     0, 1
       */
       
-      return new Matrix4x4([cos(theta), 0, -sin(theta), 0
+      return new Matrix4x4([cos(theta), 0, -sin(theta), 0,
                             0, 1, 0, 0,
                             sin(theta), 0, cos(theta), 0,
                             0, 0, 0, 1]);
@@ -189,7 +207,7 @@ var Matrix4x4 = function (rawMatrix) {
       
       */
       
-      return new Matrix4x4([cos(theta), sin(theta, 0, 0,
+      return new Matrix4x4([cos(theta), sin(theta), 0, 0,
                             -sin(theta), cos(theta), 0, 0,
                             0, 0, 1, 0,
                             0, 0, 0, 1]);
