@@ -110,6 +110,31 @@ var Matrix4x4 = function (rawMatrix) {
   };
   
   /**
+   * This static method returns a Matrix4x4 that is the result of
+   * concatenating the given list of Matrix4x4 objects. (That is, it
+   * multiplies them in order.)
+   */
+  this.concatenate = function(matrices)
+  {
+    var i;
+    if (matrices.length > 0)
+    {
+      var product = matrices[0];
+    }
+    else
+    {
+      return new Matrix4x4();
+    }
+    
+    for (i = 1; i < matrices.length; i += 1)
+    {
+      product = this.multiply(product, matrices[i]);
+    }
+    
+    return product;
+  };
+  
+  /**
    * This static method returns the Matrix4x4 representing a 3-d point
    */
   this.point3d = function(x, y, z)
