@@ -229,6 +229,10 @@ var Shapes = {
         for (i = 0; i < baseVertices.length; i += 1) {
             sideVertices = sideVertices.concat(baseVertices[i]);
         }
+        //Add the first point of the base to close the last side:
+        sideVertices = sideVertices.concat(baseVertices[0],
+                                           baseVertices[1],
+                                           baseVertices[2]);
         
             //test:
             console.log("Base Vertices:");
