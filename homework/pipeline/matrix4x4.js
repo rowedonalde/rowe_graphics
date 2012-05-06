@@ -67,6 +67,34 @@ var Matrix4x4 = function (rawMatrix) {
   };
   
   /**
+   * This instance method makes a 1-d array out of the
+   * 4x4 array that defines this matrix. In the GL style,
+   * it is column-major.
+   */
+  this.getGlMatrixArray = function()
+  {
+    var output = new Array();
+    
+    for (col = 0; col < rowLength; col += 1)
+    {
+      for (row = 0; row < colHeight; row += 1)
+      {
+        output = output.concat(this.matrix[col][row]);
+      }
+    }
+    
+    return output;
+  };
+  
+  /**
+   * This static method returns the identity Matrix4x4.
+   */
+  this.identity = function()
+  {
+    return new Matrix4x4([1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1]);
+  };
+  
+  /**
    * This static method takes two Matrix4x4 objects.
    * The method performs matrix multiplication on them and returns the result.
    * Using the matrix formats in Matrix4x4, firstMatrix is the transformation
@@ -265,5 +293,39 @@ var Matrix4x4 = function (rawMatrix) {
     {
       throw "InvalidAxis";
     }
+  };
+  
+  /**
+   * This static method returns a matrix that represents
+   * a look-at camera transformation given the x, y, and z
+   * coordinates of each of the eye point, the at point, and
+   * the view-up vector.
+   */
+  this.camera = function(eyeX, eyeY, eyeZ, atX, atY, atZ, upX, upY, upZ)
+  {
+    var atPoint, eyePoint, vUp, vpn, n, u, v;
+    
+    eyePoint = new Vector(eyeX, eyeY, eyeZ);
+    atPoint = new Vector(atX, atY, atZ);
+    vUp = new Vector(upX, upY, upZ);
+    
+    //Viewplane normal is atPoint minus eyePoint:
+    vpn = atPoint.subtract(eyePoint);
+    
+    //n is vpn, normalized:
+    n = vpn.unit();
+    
+    //u is vUp cross n, normalized:
+    u = vUp.cross(n);
+    u = u.unit();
+    
+    //v is n cross u, normalized:
+    v = n.cross(u);
+    v = v.unit();
+    
+    return new Matrix4x4([u.x(), u.y(), u.z(), -(eyePoint.dot(u)),
+                          v.x(), v.y(), v.z(), -(eyePoint.dot(v)),
+                          n.x(), n.y(), n.z(), -(eyePoint.dot(n)),
+                          0, 0, 0, 1]);
   };
 };
