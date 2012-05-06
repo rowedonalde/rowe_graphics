@@ -32,6 +32,9 @@
         <!-- Shapes is a library that generates "canned" shapes. -->
         <script src="shapes.js"></script>
         
+        <!-- Vector is a library that represents vectors and vector math -->
+        <script src="vector.js"></script>
+        
         <!-- Matrix4x4 is a library that represents a 4x4 matrix and
              transformations for it -->
         <script src="matrix4x4.js"></script>
@@ -53,9 +56,11 @@
             attribute vec3 vertexColor;
             varying vec4 finalVertexColor;
             uniform mat4 rotationMatrix;
+            uniform mat4 cameraMatrix;
 
             void main(void) {
-                gl_Position = rotationMatrix * vec4(vertexPosition, 1.0);
+                //gl_Position = rotationMatrix * vec4(vertexPosition, 1.0);
+                gl_Position = rotationMatrix * cameraMatrix *  vec4(vertexPosition, 1.0);
                 finalVertexColor = vec4(vertexColor, 1.0);
             }
         </script>
