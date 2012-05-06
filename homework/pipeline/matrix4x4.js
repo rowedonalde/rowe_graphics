@@ -328,4 +328,13 @@ var Matrix4x4 = function (rawMatrix) {
                           n.x(), n.y(), n.z(), -(eyePoint.dot(n)),
                           0, 0, 0, 1]);
   };
+  
+  this.frustum = function(left, right, bottom, top, near, far) //wherever you are
+  {
+
+    return new Matrix4x4([near / right, 0.0, 0.0, 0.0,
+                          0.0, near / top, 0.0, 0.0,
+                          0.0, 0.0, (near - far) / (far - near), -1.0,
+                          0.0, 0.0, -2.0 * far * near / (far - near), 0.0]);
+  };
 };

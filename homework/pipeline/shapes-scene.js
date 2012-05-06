@@ -28,7 +28,16 @@
         projectionMatrix,
         cameraMatrix,
         normalVector,
-        cameraMatrix4x4,
+        cameraMatrix4x4, //0, 0, 0, 1, 0, -1, 0, 1, 0
+        eyeX = 0,
+        eyeY = 0,
+        eyeZ = 0,
+        atX = 1, 
+        atY = 0,
+        atZ = -1,
+        upX = 0,
+        upY = 1,
+        upZ = 0,
 
         // An individual "draw object" function.
         drawObject,
@@ -301,7 +310,7 @@
     gl.enableVertexAttribArray(normalVector);
     
     //View transformation:
-    instanceMatrix = gl.getUniformLocation(shaderProgram, "instanceMatrix");
+    //instanceMatrix = gl.getUniformLocation(shaderProgram, "instanceMatrix");
     projectionMatrix = gl.getUniformLocation(shaderProgram, "projectionMatrix");
     cameraMatrix = gl.getUniformLocation(shaderProgram, "cameraMatrix");
 
@@ -310,13 +319,11 @@
      */
     drawObject = function (object) {
         //Transform the camera:
-        //cameraMatrix4x4 = matrix4x4Static.camera(0, 0, 0, 0, 0, -1, 0, 1, 0);
-        cameraMatrix4x4 = new matrix4x4Static.identity();
+        //cameraMatrix4x4 = matrix4x4Static.camera(0, 0, 0, 1, 0, -1, 0, 1, 0);
+        cameraMatrix4x4 = matrix4x4Static.camera(eyeX, eyeY, eyeZ, atX, atY, atZ, upX, upY, upZ);
+        //cameraMatrix4x4 = matrix4x4Static.identity();
         gl.uniformMatrix4fv(cameraMatrix, gl.FALSE, new Float32Array(cameraMatrix4x4.getGlMatrixArray()));
-            //test:
-            //gl.uniformMatrix4fv(cameraMatrix, gl.FALSE,
-            //                    new Float32Array([1,0,0,0,0,.95,.29,0,0,-.29,.95,0,0,-.29,-30]));
-    
+        
         // Set the varying colors.
         gl.bindBuffer(gl.ARRAY_BUFFER, object.colorBuffer);
         gl.vertexAttribPointer(vertexColor, 3, gl.FLOAT, false, 0, 0);
@@ -350,10 +357,16 @@
     };
     
     //Projection matrix:
-    //gl.uniformMatrix4fv
-    //gl.uniformMatrix4fv(projectionMatrix, gl.FALSE,
-    //                    new Float32Array([10,10,10,10, 10,11,10,10, 10,10,11,10, 10,10,10,11]));
-
+    //gl.uniformMatrix4fv(projectionMatrix, gl.FALSE, new Float32Array(matrix4x4Static.identity().getGlMatrixArray()));
+    var frustum = matrix4x4Static.frustum(-2 * canvas.width / canvas.height,
+                                          2 * canvas.width / canvas.height,
+                                          -2,
+                                          2,
+                                          10,
+                                          50).getGlMatrixArray();
+    //alert(frustum);    
+    gl.uniformMatrix4fv(projectionMatrix, gl.FALSE, new Float32Array(frustum));
+    
     // Draw the initial scene.
     drawScene();
 
@@ -371,6 +384,32 @@
                 }
             }, 30);
         }
+    });
+    
+    //If the user presses W/A/S/D, move in the appropriate direction:
+    $(document).keydown(function(e) {
+      switch (e.keyCode) {
+        case 87: //w
+            eyeZ += 0.25;
+            atZ += 0.25;
+            break;
+        case 83: //s
+            eyeZ -= 0.25;
+            atZ -= 0.25;
+            break;
+        case 65: //a
+            eyeX -= 0.25;
+            atX -= 0.25;
+            break;
+        case 68: //d
+            eyeX += 0.25;
+            atX += 0.25;
+            break
+        default:
+            break
+      }
+      
+      drawScene();
     });
 
 }(document.getElementById("shapes-scene")));
