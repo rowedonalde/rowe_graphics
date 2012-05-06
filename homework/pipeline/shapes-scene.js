@@ -392,18 +392,22 @@
         case 87: //w
             eyeZ += 0.25;
             atZ += 0.25;
+            upZ += 0.25;
             break;
         case 83: //s
             eyeZ -= 0.25;
             atZ -= 0.25;
+            upZ -= 0.25;
             break;
         case 65: //a
             eyeX -= 0.25;
             atX -= 0.25;
+            upX -= 0.25;
             break;
         case 68: //d
             eyeX += 0.25;
             atX += 0.25;
+            upX += 0.25;
             break
         default:
             break
