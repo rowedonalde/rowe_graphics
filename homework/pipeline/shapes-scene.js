@@ -24,6 +24,11 @@
         rotationMatrix,
         vertexPosition,
         vertexColor,
+        instanceMatrix,
+        projectionMatrix,
+        cameraMatrix,
+        normalVector,
+        cameraMatrix4x4,
 
         // An individual "draw object" function.
         drawObject,
@@ -292,14 +297,30 @@
     vertexColor = gl.getAttribLocation(shaderProgram, "vertexColor");
     gl.enableVertexAttribArray(vertexColor);
     rotationMatrix = gl.getUniformLocation(shaderProgram, "rotationMatrix");
+    normalVector  = gl.getUniformLocation(shaderProgram, "normalVector");
+    gl.enableVertexAttribArray(normalVector);
+    
+    //View transformation:
+    instanceMatrix = gl.getUniformLocation(shaderProgram, "instanceMatrix");
+    projectionMatrix = gl.getUniformLocation(shaderProgram, "projectionMatrix");
+    cameraMatrix = gl.getUniformLocation(shaderProgram, "cameraMatrix");
 
     /*
      * Displays an individual object.
      */
     drawObject = function (object) {
+        //Transform the camera:
+        //cameraMatrix4x4 = matrix4x4Static.camera(0, 0, 0, 0, 0, -1, 0, 1, 0);
+        cameraMatrix4x4 = new matrix4x4Static.identity();
+        gl.uniformMatrix4fv(cameraMatrix, gl.FALSE, new Float32Array(cameraMatrix4x4.getGlMatrixArray()));
+            //test:
+            //gl.uniformMatrix4fv(cameraMatrix, gl.FALSE,
+            //                    new Float32Array([1,0,0,0,0,.95,.29,0,0,-.29,.95,0,0,-.29,-30]));
+    
         // Set the varying colors.
         gl.bindBuffer(gl.ARRAY_BUFFER, object.colorBuffer);
         gl.vertexAttribPointer(vertexColor, 3, gl.FLOAT, false, 0, 0);
+        
 
         // Set the varying vertex coordinates.
         gl.bindBuffer(gl.ARRAY_BUFFER, object.buffer);
@@ -321,10 +342,17 @@
         for (i = 0, maxi = objectsToDraw.length; i < maxi; i += 1) {
             drawObject(objectsToDraw[i]);
         }
+        
+        
 
         // All done.
         gl.flush();
     };
+    
+    //Projection matrix:
+    //gl.uniformMatrix4fv
+    //gl.uniformMatrix4fv(projectionMatrix, gl.FALSE,
+    //                    new Float32Array([10,10,10,10, 10,11,10,10, 10,10,11,10, 10,10,10,11]));
 
     // Draw the initial scene.
     drawScene();
