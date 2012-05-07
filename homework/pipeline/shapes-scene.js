@@ -172,7 +172,7 @@
     var tetra1Tran = matrix4x4Static.concatenate([
         matrix4x4Static.rotate('x', 90),
         matrix4x4Static.scale(.5, .5, .5),
-        matrix4x4Static.translate(1, 1, 1)
+        matrix4x4Static.translate(1, 1, 2)
     ]);
     tetra1Side = applyMatrix(tetra1Side, tetra1Tran);
     tetra1Base = applyMatrix(tetra1Base, tetra1Tran);
@@ -185,7 +185,7 @@
     var sphere1Tran = matrix4x4Static.concatenate([
         matrix4x4Static.scale(.3, .1, .3),
         matrix4x4Static.rotate('y', 45),
-        matrix4x4Static.translate(-1, -1, -1)
+        matrix4x4Static.translate(-1, -1, -2)
     ]);
     sphere1Body = applyMatrix(sphere1Body, sphere1Tran);
     sphere1Pole1 = applyMatrix(sphere1Pole1, sphere1Tran);
