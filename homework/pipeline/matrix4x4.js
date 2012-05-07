@@ -331,10 +331,22 @@ var Matrix4x4 = function (rawMatrix) {
   
   this.frustum = function(left, right, bottom, top, near, far) //wherever you are
   {
-
+    /*
     return new Matrix4x4([near / right, 0.0, 0.0, 0.0,
                           0.0, near / top, 0.0, 0.0,
                           0.0, 0.0, (near - far) / (far - near), -1.0,
                           0.0, 0.0, -2.0 * far * near / (far - near), 0.0]);
+    */
+    var l = left,
+        r = right,
+        b = bottom,
+        t = top,
+        n = near,
+        f = far;
+    
+    return new Matrix4x4([2 * n / (r - l), 0, 0, 0,
+                          0, 2 * n / (t - b), 0, 0,
+                          (r + l) / (r - l), (t + b) / (t - b), -(f + n) / (f - n), -1,
+                          0, 0, -2 * n * f / (f - n), 0]);
   };
 };

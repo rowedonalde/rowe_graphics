@@ -61,8 +61,8 @@
 
             void main(void) {
                 //gl_Position = rotationMatrix * vec4(vertexPosition, 1.0);
-                gl_Position = rotationMatrix * cameraMatrix * vec4(vertexPosition, 1.0);
-                //gl_Position = projectionMatrix * vec4(vertexPosition, 1.0);
+                //gl_Position = rotationMatrix * cameraMatrix * vec4(vertexPosition, 1.0);
+                gl_Position = cameraMatrix * projectionMatrix * rotationMatrix * vec4(vertexPosition, 1.0);
                 finalVertexColor = vec4(vertexColor, 1.0);
             }
         </script>

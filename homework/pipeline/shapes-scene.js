@@ -28,13 +28,13 @@
         projectionMatrix,
         cameraMatrix,
         normalVector,
-        cameraMatrix4x4, //0, 0, 0, 1, 0, -1, 0, 1, 0
+        cameraMatrix4x4,
         eyeX = 0,
-        eyeY = 0,
-        eyeZ = 0,
-        atX = 1, 
+        eyeY = 1,
+        eyeZ = -2,
+        atX = 0,
         atY = 0,
-        atZ = -1,
+        atZ = 0,
         upX = 0,
         upY = 1,
         upZ = 0,
@@ -319,9 +319,7 @@
      */
     drawObject = function (object) {
         //Transform the camera:
-        //cameraMatrix4x4 = matrix4x4Static.camera(0, 0, 0, 1, 0, -1, 0, 1, 0);
         cameraMatrix4x4 = matrix4x4Static.camera(eyeX, eyeY, eyeZ, atX, atY, atZ, upX, upY, upZ);
-        //cameraMatrix4x4 = matrix4x4Static.identity();
         gl.uniformMatrix4fv(cameraMatrix, gl.FALSE, new Float32Array(cameraMatrix4x4.getGlMatrixArray()));
         
         // Set the varying colors.
@@ -362,8 +360,8 @@
                                           2 * canvas.width / canvas.height,
                                           -2,
                                           2,
-                                          10,
-                                          50).getGlMatrixArray();
+                                          -20,
+                                          3).getGlMatrixArray();
     //alert(frustum);    
     gl.uniformMatrix4fv(projectionMatrix, gl.FALSE, new Float32Array(frustum));
     
