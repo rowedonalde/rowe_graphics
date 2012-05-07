@@ -19,7 +19,7 @@
         abort = false,
 
         // Important state variables.
-        currentRotation = 0.0,
+        currentRotation = 0,
         currentInterval,
         rotationMatrix,
         vertexPosition,
@@ -30,8 +30,8 @@
         normalVector,
         cameraMatrix4x4,
         eyeX = 0,
-        eyeY = 1,
-        eyeZ = -2,
+        eyeY = 0,
+        eyeZ = 10,
         atX = 0,
         atY = 0,
         atZ = 0,
@@ -61,6 +61,7 @@
          * Based on the original glRotate reference:
          *     http://www.opengl.org/sdk/docs/man/xhtml/glRotate.xml
          */
+        // JD: This should go in your Matrix4x4 library now.
         getRotationMatrix = function (angle, x, y, z) {
             // In production code, this function should be associated
             // with a matrix object with associated functions.
@@ -126,9 +127,12 @@
          * [x0, y0, z0, x1, y1, z1, ..., xn, yn, zn] (i.e., the standard way)
          * and applies the given matrix transformation to each point defined by
          * that array.
-         * TODO: Perhaps put this in Matrix4x4 instead?         
+         * TODO: Perhaps put this in Matrix4x4 instead?
+         *
+         * JD: Yup, move it there.  But see below for further notes on how
+         *     you are using this.      
          */
-        applyMatrix = function(vertices, matrix) {
+        applyMatrix = function (vertices, matrix) {
             for (i = 0; i < vertices.length; i += 3) {
                 var matrix4x4Static = new Matrix4x4();
                 var currentPoint = matrix4x4Static.point3d(vertices[i],
@@ -169,6 +173,28 @@
     var tetra1Side = Shapes.tetrahedron()['fan1'];
     var tetra1Base = Shapes.tetrahedron()['fan2'];
     //Concatenate the transformation matrices:
+
+    // JD: Note for this whole block of code (up to right before objectsToDraw):
+    //     You are showing here that you understand what the matrices do on a
+    //     mathematical level, by using them to change the vertices in your scene.
+    //     Note, however, that in practice, this is more typically done *in the
+    //     vertex shader*.  i.e., leave your objects with their vertices stored
+    //     relative to the origin, and transform them at the point of rendering.
+    //
+    // The benefit of this may not be obvious for static objects, but it becomes
+    // absolutely necessary for objects in motion.  For such objects, you will
+    // typically store their locations and other state in variables.  Then, the
+    // desired matrices are derived from those variables, which are then multiplied
+    // to the vertices via a model-view matrix in the vertex shader.
+    //
+    // One big reason for doing it this way: hardware acceleration.  In your code
+    // below, you are doing all of this math in JavaScript.  If you defer the matrix
+    // multiplication for the shader, then you are doing this in the graphics card.
+    // Arguably much faster than doing it here  :)  (you might then say, but wait,
+    // if I do it here, I do it just once, but if I do it in the vertex shader, I
+    // do these calculations for every frame---this is also true, but then we revert
+    // to the question of actual moving objects within the scene: you *will* have
+    // to do those calculations for every frame anyway!)
     var tetra1Tran = matrix4x4Static.concatenate([
         matrix4x4Static.rotate('x', 90),
         matrix4x4Static.scale(.5, .5, .5),
@@ -310,6 +336,7 @@
     gl.enableVertexAttribArray(normalVector);
     
     //View transformation:
+    // JD: The humongous note above is why we had an instanceMatrix here.
     //instanceMatrix = gl.getUniformLocation(shaderProgram, "instanceMatrix");
     projectionMatrix = gl.getUniformLocation(shaderProgram, "projectionMatrix");
     cameraMatrix = gl.getUniformLocation(shaderProgram, "cameraMatrix");
@@ -319,9 +346,11 @@
      */
     drawObject = function (object) {
         //Transform the camera:
+        // JD: Your camera does not change between objects in a scene, so
+        //     this is better done in drawScene.
         cameraMatrix4x4 = matrix4x4Static.camera(eyeX, eyeY, eyeZ, atX, atY, atZ, upX, upY, upZ);
         gl.uniformMatrix4fv(cameraMatrix, gl.FALSE, new Float32Array(cameraMatrix4x4.getGlMatrixArray()));
-        
+
         // Set the varying colors.
         gl.bindBuffer(gl.ARRAY_BUFFER, object.colorBuffer);
         gl.vertexAttribPointer(vertexColor, 3, gl.FLOAT, false, 0, 0);
@@ -347,8 +376,6 @@
         for (i = 0, maxi = objectsToDraw.length; i < maxi; i += 1) {
             drawObject(objectsToDraw[i]);
         }
-        
-        
 
         // All done.
         gl.flush();
@@ -360,8 +387,8 @@
                                           2 * canvas.width / canvas.height,
                                           -2,
                                           2,
-                                          -20,
-                                          3).getGlMatrixArray();
+                                          5,
+                                          1000).getGlMatrixArray();
     //alert(frustum);    
     gl.uniformMatrix4fv(projectionMatrix, gl.FALSE, new Float32Array(frustum));
     
@@ -388,18 +415,25 @@
     $(document).keydown(function(e) {
       switch (e.keyCode) {
         case 87: //w
+            // JD: Note that moving in the positive z direction is now perceived
+            //     as "backward" based on the current setup for the camera.
             eyeZ += 0.25;
             atZ += 0.25;
-            upZ += 0.25;
+            // JD: up vector should not be affected by forward/backward movement.
+            //upZ += 0.25;
             break;
         case 83: //s
             eyeZ -= 0.25;
             atZ -= 0.25;
-            upZ -= 0.25;
+            // JD: Ditto up vector.
+            //upZ -= 0.25;
             break;
         case 65: //a
             eyeX -= 0.25;
             atX -= 0.25;
+            // JD: I didn't touch your up vector change here because you might
+            //     indeed have been intending a "bank" effect.  But if you intend
+            //     just good ol' strafing, you'll want to ditch this too.
             upX -= 0.25;
             break;
         case 68: //d

@@ -62,7 +62,11 @@
             void main(void) {
                 //gl_Position = rotationMatrix * vec4(vertexPosition, 1.0);
                 //gl_Position = rotationMatrix * cameraMatrix * vec4(vertexPosition, 1.0);
-                gl_Position = cameraMatrix * projectionMatrix * rotationMatrix * vec4(vertexPosition, 1.0);
+                // JD: Remember that order matters.  The projectionMatrix should be the
+                //     last thing that you do.  The rotationMatrix here is used as a sort
+                //     of global rotation, so we do that second-to-last, after the scene
+                //     has been adjusted according to the camera.
+                gl_Position = projectionMatrix * rotationMatrix * cameraMatrix * vec4(vertexPosition, 1.0);
                 finalVertexColor = vec4(vertexColor, 1.0);
             }
         </script>

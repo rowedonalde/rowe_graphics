@@ -310,23 +310,45 @@ var Matrix4x4 = function (rawMatrix) {
     vUp = new Vector(upX, upY, upZ);
     
     //Viewplane normal is atPoint minus eyePoint:
-    vpn = atPoint.subtract(eyePoint);
-    
+    // JD: Actually, you want eyePoint - atPoint here, because the
+    //     z-according-to-the-camera vector points from the atPoint
+    //     to the eyePoint.
+//    vpn = atPoint.subtract(eyePoint);
+    vpn = eyePoint.subtract(atPoint);
+
     //n is vpn, normalized:
     n = vpn.unit();
     
     //u is vUp cross n, normalized:
+    // JD: Nope, nope, you don't do two cross-products here.  The
+    //     y-according-to-the-camera unit vector is derived by projecting
+    //     the up vector onto the newly derived z-according-to-the-camera
+    //     vector (which you have called n here).
     u = vUp.cross(n);
     u = u.unit();
     
     //v is n cross u, normalized:
     v = n.cross(u);
     v = v.unit();
-    
-    return new Matrix4x4([u.x(), u.y(), u.z(), -(eyePoint.dot(u)),
-                          v.x(), v.y(), v.z(), -(eyePoint.dot(v)),
-                          n.x(), n.y(), n.z(), -(eyePoint.dot(n)),
-                          0, 0, 0, 1]);
+
+    // JD: To get things lined up, I just "overwrote" your calculations
+    //     with the right ones here.  I get the sense that you derived
+    //     these computations from a different source.  If so, I would
+    //     double-check that you are interpreting that source's parameters
+    //     in the same way (the very fact that the initial subtraction is
+    //     reversed leads me to think that there might be a mix-up here)
+    //     and that you are indeed making the right calculations.
+    //
+    // For now, what you have here (combined with my other changes) should
+    // give you a fairly stable starting point.
+    v = vUp.subtract(vUp.projection(n)).unit();
+    u = v.cross(n).unit();
+
+    // JD: I also transposed this; it was in row-major order.
+    return new Matrix4x4([u.x(), v.x(), n.x(), 0,
+                          u.y(), v.y(), n.y(), 0,
+                          u.z(), v.z(), n.z(), 0,
+                           -(eyePoint.dot(u)), -(eyePoint.dot(v)), -(eyePoint.dot(n)), 1]);
   };
   
   this.frustum = function(left, right, bottom, top, near, far) //wherever you are
