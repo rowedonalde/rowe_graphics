@@ -31,10 +31,10 @@
         cameraMatrix4x4,
         eyeX = 0,
         eyeY = 0,
-        eyeZ = 10,
+        eyeZ = 0,
         atX = 0,
         atY = 0,
-        atZ = 0,
+        atZ = -1,
         upX = 0,
         upY = 1,
         upZ = 0,
@@ -345,11 +345,6 @@
      * Displays an individual object.
      */
     drawObject = function (object) {
-        //Transform the camera:
-        // JD: Your camera does not change between objects in a scene, so
-        //     this is better done in drawScene.
-        cameraMatrix4x4 = matrix4x4Static.camera(eyeX, eyeY, eyeZ, atX, atY, atZ, upX, upY, upZ);
-        gl.uniformMatrix4fv(cameraMatrix, gl.FALSE, new Float32Array(cameraMatrix4x4.getGlMatrixArray()));
 
         // Set the varying colors.
         gl.bindBuffer(gl.ARRAY_BUFFER, object.colorBuffer);
@@ -371,6 +366,10 @@
 
         // Set up the rotation matrix.
         gl.uniformMatrix4fv(rotationMatrix, gl.FALSE, new Float32Array(getRotationMatrix(currentRotation, 0, 1, 0)));
+        
+        //Transform the camera:
+        cameraMatrix4x4 = matrix4x4Static.camera(eyeX, eyeY, eyeZ, atX, atY, atZ, upX, upY, upZ);
+        gl.uniformMatrix4fv(cameraMatrix, gl.FALSE, new Float32Array(cameraMatrix4x4.getGlMatrixArray()));
 
         // Display the objects.
         for (i = 0, maxi = objectsToDraw.length; i < maxi; i += 1) {
@@ -387,8 +386,8 @@
                                           2 * canvas.width / canvas.height,
                                           -2,
                                           2,
-                                          5,
-                                          1000).getGlMatrixArray();
+                                          10,
+                                          50).getGlMatrixArray();
     //alert(frustum);    
     gl.uniformMatrix4fv(projectionMatrix, gl.FALSE, new Float32Array(frustum));
     
@@ -434,12 +433,12 @@
             // JD: I didn't touch your up vector change here because you might
             //     indeed have been intending a "bank" effect.  But if you intend
             //     just good ol' strafing, you'll want to ditch this too.
-            upX -= 0.25;
+            //upX -= 0.25;
             break;
         case 68: //d
             eyeX += 0.25;
             atX += 0.25;
-            upX += 0.25;
+            //upX += 0.25;
             break
         default:
             break
