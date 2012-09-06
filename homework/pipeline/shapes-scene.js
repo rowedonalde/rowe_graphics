@@ -31,7 +31,7 @@
         cameraMatrix4x4,
         eyeX = 0,
         eyeY = 0,
-        eyeZ = 0,
+        eyeZ = 11, // JD 9/6: It was all about the Z's  :)
         atX = 0,
         atY = 0,
         atZ = -1,
@@ -388,7 +388,7 @@
                                           2,
                                           10,
                                           50).getGlMatrixArray();
-    //alert(frustum);    
+    //alert(frustum);
     gl.uniformMatrix4fv(projectionMatrix, gl.FALSE, new Float32Array(frustum));
     
     // Draw the initial scene.

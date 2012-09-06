@@ -62,13 +62,20 @@
             void main(void) {
                 //gl_Position = rotationMatrix * vec4(vertexPosition, 1.0);
                 //gl_Position = vec4(vertexPosition, 1.0) * rotationMatrix;
-                gl_Position = vec4(vertexPosition, 1.0) * cameraMatrix * rotationMatrix * projectionMatrix;
+                //gl_Position = vec4(vertexPosition, 1.0) * cameraMatrix * rotationMatrix * projectionMatrix;
                 //gl_Position = rotationMatrix * cameraMatrix * vec4(vertexPosition, 1.0);
                 // JD: Remember that order matters.  The projectionMatrix should be the
                 //     last thing that you do.  The rotationMatrix here is used as a sort
                 //     of global rotation, so we do that second-to-last, after the scene
                 //     has been adjusted according to the camera.
-                //gl_Position = projectionMatrix * rotationMatrix * cameraMatrix * vec4(vertexPosition, 1.0);
+                //
+                // JD 9/6: Sorry, should have been clearer about that "last thing you do"
+                //     phrase.  What that means is that those matrices are thus written
+                //     *first*.  If you think of each matrix as a function, then you'll
+                //     see it: P(R(C(vertex))).  See how that's written?  Note that P is
+                //     thus the last thing being done to the vertex.  That's what I meant.
+                //     So, below is the right order:
+                gl_Position = projectionMatrix * rotationMatrix * cameraMatrix * vec4(vertexPosition, 1.0);
                 //gl_Position = vec4(vertexPosition, 1.0) * cameraMatrix * rotationMatrix * projectionMatrix;
                 finalVertexColor = vec4(vertexColor, 1.0);
             }
